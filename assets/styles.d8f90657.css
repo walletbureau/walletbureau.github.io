@@ -1,0 +1,1029 @@
+/* ==========================================================================
+   WalletBureau — design tokens + prototype stylesheet
+   Pure CSS. No external requests. System font stack only.
+   Theme: dark by default, light via prefers-color-scheme. No JS switcher.
+   ========================================================================== */
+
+:root {
+  /* --- Color: surfaces & text (dark, default) ------------------------- */
+  --c-bg:            #0e1211;
+  --c-surface:       #151b19;
+  --c-surface-2:     #1b2220;
+  --c-ink:           #e7ece9;   /* 14.6:1 on --c-bg */
+  --c-ink-2:         #a7b2ad;   /*  7.5:1 on --c-bg */
+  --c-ink-3:         #8b9691;   /*  5.4:1 on --c-bg */
+  --c-line:          #28312e;
+  --c-line-strong:   #3a4642;
+  --c-focus:         #7fd7b0;
+
+  /* --- Color: accent (security green) --------------------------------- */
+  --c-accent:        #5fc99a;   /*  9.6:1 on --c-bg */
+  --c-accent-ink:    #0e1211;   /* text on accent fill */
+  --c-accent-soft:   #13291f;
+
+  /* --- Color: backdrop (grid, glow, dot network) ---------------------- */
+  --c-grid:          rgba(95, 201, 154, .028);
+  --c-grid-major:    rgba(95, 201, 154, .055);
+  --c-glow:          rgba(95, 201, 154, .085);
+  --c-net-dot:       rgba(127, 215, 176, .64);
+  --c-net-line:      rgba(95, 201, 154, .37);
+  --grid-cell:       34px;
+  --grid-major:      170px;
+
+  /* --- Color: verdict schemes (word + color, never color alone) ------- */
+  --v-ok-fg:         #5fc99a;
+  --v-ok-bg:         #13291f;
+  --v-ok-border:     #2f7a58;
+  --v-caution-fg:    #e0b25c;
+  --v-caution-bg:    #2a2314;
+  --v-caution-border:#8a6c26;
+  --v-avoid-fg:      #ec8078;
+  --v-avoid-bg:      #2c1917;
+  --v-avoid-border:  #8f4a44;
+  --v-neutral-fg:    #a7b2ad;
+  --v-neutral-bg:    #1b2220;
+  --v-neutral-border:#3a4642;
+
+  /* --- Color: flag severity ------------------------------------------- */
+  --sev-low:         #8b9691;
+  --sev-med:         #e0b25c;
+  --sev-high:        #ec8078;
+
+  /* --- Typography ------------------------------------------------------ */
+  --f-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --s-1: 13px;   /* micro label */
+  --s-2: 14px;   /* small / code */
+  --s-3: 16px;   /* body */
+  --s-4: 18px;   /* lede, long-read body */
+  --s-5: 21px;   /* h3 */
+  --s-6: 28px;   /* h2 */
+  --s-7: 34px;   /* page h1 (inner pages) */
+  --s-8: 56px;   /* score numeral / hero h1 cap */
+  --lh-tight: 1.15;
+  --lh-body: 1.6;
+  --lh-read: 1.72;
+  --measure: 68ch;
+
+  /* --- Spacing (4px step) ---------------------------------------------- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 96px;
+
+  /* --- Radii ------------------------------------------------------------ */
+  --r-1: 3px; --r-2: 6px; --r-3: 10px; --r-pill: 999px;
+
+  /* --- Shadows (used sparingly; dark theme leans on borders) ----------- */
+  --sh-1: 0 1px 2px rgba(0,0,0,.30);
+  --sh-2: 0 4px 16px rgba(0,0,0,.35);
+  /* Неон под курсором: два ореола, ближний плотный и дальний размытый. */
+  --sh-neon: 0 0 0 1px rgba(127, 215, 176, .55), 0 0 16px rgba(95, 201, 154, .40), 0 0 38px rgba(95, 201, 154, .18);
+  --sh-neon-soft: 0 0 12px rgba(95, 201, 154, .22);
+
+  /* --- Layout & breakpoints -------------------------------------------- */
+  --h-header: 59px;   /* шапка: 16+16 padding, строка бренда и полоса снизу */
+  --w-page: 1140px;
+  --w-read: 720px;
+  --w-text: 780px;   /* колонка чтения в статье: ~80 знаков на строку при 18px */
+  --w-media: 886px;  /* схема в статье: 80% контентной области, шире колонки чтения */
+  --bp-sm: 480px;
+  --bp-md: 720px;
+  --bp-lg: 960px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --c-bg:            #fbfbfa;
+    --c-surface:       #ffffff;
+    --c-surface-2:     #f3f5f3;
+    --c-ink:           #16191a;   /* 15.8:1 */
+    --c-ink-2:         #4c5359;   /*  7.9:1 */
+    --c-ink-3:         #63696d;   /*  5.6:1 */
+    --c-line:          #e2e5e1;
+    --c-line-strong:   #c3c8c2;
+    --c-focus:         #16694a;
+
+    --c-accent:        #14603f;   /*  8.4:1 */
+    --c-accent-ink:    #ffffff;
+    --c-accent-soft:   #e6f0ea;
+
+    /* На светлом фоне зелёный «светится» хуже и грязнит текст — сетка и точки
+       здесь заметно бледнее, чем в тёмной теме. */
+    --c-grid:          rgba(20, 96, 63, .028);
+    --c-grid-major:    rgba(20, 96, 63, .05);
+    --c-glow:          rgba(20, 96, 63, .05);
+    --c-net-dot:       rgba(20, 96, 63, .5);
+    --c-net-line:      rgba(20, 96, 63, .32);
+
+    --v-ok-fg:         #14603f;
+    --v-ok-bg:         #e6f0ea;
+    --v-ok-border:     #14603f;
+    --v-caution-fg:    #74500a;
+    --v-caution-bg:    #f6eedc;
+    --v-caution-border:#74500a;
+    --v-avoid-fg:      #97231e;
+    --v-avoid-bg:      #f8e6e4;
+    --v-avoid-border:  #97231e;
+    --v-neutral-fg:    #4c5359;
+    --v-neutral-bg:    #f3f5f3;
+    --v-neutral-border:#c3c8c2;
+
+    --sev-low:         #63696d;
+    --sev-med:         #74500a;
+    --sev-high:        #97231e;
+
+    --sh-neon: 0 0 0 1px rgba(20, 96, 63, .45), 0 6px 18px rgba(20, 96, 63, .28);
+    --sh-neon-soft: 0 2px 10px rgba(20, 96, 63, .16);
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--f-sans);
+  font-size: var(--s-3);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { margin: 0; font-weight: 600; letter-spacing: -0.02em; text-wrap: pretty; }
+p { margin: 0; text-wrap: pretty; }
+ul, ol { margin: 0; padding: 0; }
+
+a { color: var(--c-accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; border-radius: var(--r-1); }
+
+code, pre, .mono, .num { font-family: var(--f-mono); }
+.num { font-variant-numeric: tabular-nums; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+
+.wrap { max-width: var(--w-page); margin: 0 auto; padding: 0 var(--sp-4); }
+.wrap--read { max-width: var(--w-read); }
+.section { padding: var(--sp-7) 0; }
+.section + .section { border-top: 1px solid var(--c-line); }
+.stack { display: grid; gap: var(--sp-4); }
+.stack--lg { display: grid; gap: var(--sp-5); }
+
+.skip-link {
+  position: absolute; left: var(--sp-4); top: -60px; z-index: 10;
+  background: var(--c-accent); color: var(--c-accent-ink);
+  padding: var(--sp-2) var(--sp-4); border-radius: var(--r-2); text-decoration: none;
+}
+.skip-link:focus { top: var(--sp-3); }
+
+/* --- Header / footer --------------------------------------------------- */
+
+.site-header {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--sp-3) var(--sp-5);
+  padding: var(--sp-4) 0; border-bottom: 1px solid var(--c-line);
+}
+.brand {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  color: var(--c-ink); text-decoration: none;
+}
+/* Имя набирается как в логотипе — жирный гротеск, «Bureau» акцентом (build.mjs,
+   brandNameHtml), — но остаётся текстом: выделяется мышью, находится поиском по странице,
+   живёт в словаре одной строкой. Локап картинкой в шапку не ставим (27.08.2026). */
+.brand__name { font-family: var(--f-sans); font-weight: 700; font-size: var(--s-4); letter-spacing: -0.02em; }
+.brand__name--accent { color: var(--c-accent); }
+/* Знак бренда — <img> с фирменными цветами (см. build.mjs): знак объёмный, currentColor
+   ему нечего наследовать, и на светлой теме он читается сам. Заглушка-квадрат заменена
+   11.08.2026, инлайновый SVG — новым знаком 27.08.2026. Знак выше, чем шире, поэтому
+   задана высота, а ширину браузер берёт из атрибутов картинки. */
+.brand__mark { height: 22px; width: auto; flex: 0 0 auto; }
+.nav { display: flex; flex-wrap: wrap; gap: var(--sp-4) var(--sp-5); font-family: var(--f-mono); font-size: var(--s-2); }
+.nav a { color: var(--c-ink-2); text-decoration: none; }
+.nav a:hover, .nav a[aria-current="page"] { color: var(--c-ink); text-decoration: underline; }
+
+.site-footer { border-top: 1px solid var(--c-line); padding: var(--sp-6) 0 var(--sp-8); display: grid; gap: var(--sp-3); }
+.site-footer p { color: var(--c-ink-2); font-size: var(--s-2); }
+.footer-links { display: flex; flex-wrap: wrap; gap: var(--sp-3) var(--sp-4); list-style: none; font-size: var(--s-2); }
+.lang { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-2); font-size: var(--s-2); color: var(--c-ink-2); }
+.lang ul { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-3); list-style: none; }
+.lang [aria-current="true"] { color: var(--c-ink); }
+
+/* --- Breadcrumbs -------------------------------------------------------- */
+
+.breadcrumbs { font-size: var(--s-2); color: var(--c-ink-3); padding: var(--sp-4) 0 0; }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; gap: var(--sp-2); list-style: none; }
+.breadcrumbs li + li::before { content: "→"; margin-right: var(--sp-2); color: var(--c-ink-3); }
+
+/* ==========================================================================
+   Buttons, tags, notices
+   ========================================================================== */
+
+.btn {
+  display: inline-block; font: inherit; font-weight: 600; text-align: center;
+  padding: 12px 22px; border-radius: var(--r-2); border: 1px solid transparent;
+  cursor: pointer; text-decoration: none; max-width: 100%;
+}
+.btn--primary { background: var(--c-accent); color: var(--c-accent-ink); }
+.btn--primary:hover { filter: brightness(1.08); box-shadow: var(--sh-neon); }
+.btn--secondary { background: var(--c-surface-2); color: var(--c-ink); border-color: var(--c-line-strong); }
+.btn--secondary:hover { border-color: var(--c-accent); box-shadow: var(--sh-neon-soft); }
+
+/* Разгорается плавно, гаснет — тоже. Тем, кто просил меньше движения, свечение
+   достаётся сразу и без перехода: это подсветка состояния, а не анимация. */
+@media (prefers-reduced-motion: no-preference) {
+  .btn { transition: box-shadow .22s ease, filter .22s ease, border-color .22s ease; }
+}
+.btn[disabled], .btn[aria-disabled="true"] { opacity: .55; cursor: not-allowed; }
+.btn--block { display: block; width: 100%; }
+.btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3) var(--sp-5); }
+
+.btn-mini {
+  font-family: var(--f-mono); font-size: var(--s-1); line-height: 1.4;
+  background: transparent; color: var(--c-ink-2);
+  border: 1px solid var(--c-line-strong); border-radius: var(--r-1);
+  padding: 3px 8px; cursor: pointer;
+}
+.btn-mini:hover { color: var(--c-ink); border-color: var(--c-ink-3); }
+
+.tag {
+  display: inline-block; font-family: var(--f-mono); font-size: var(--s-1);
+  color: var(--c-ink-2); border: 1px solid var(--c-line-strong);
+  border-radius: var(--r-1); padding: 1px 6px; white-space: nowrap;
+}
+
+.eyebrow {
+  font-family: var(--f-mono); font-size: var(--s-1); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--c-ink-3);
+}
+.caption { font-size: var(--s-2); color: var(--c-ink-3); }
+
+.notice {
+  border: 1px solid var(--c-line-strong); border-left-width: 3px;
+  border-radius: var(--r-2); background: var(--c-surface);
+  padding: var(--sp-3) var(--sp-4); font-size: var(--s-2); color: var(--c-ink-2);
+  display: grid; gap: var(--sp-2);
+}
+.notice strong { color: var(--c-ink); font-weight: 600; }
+.notice--error { border-left-color: var(--v-avoid-fg); background: var(--v-avoid-bg); color: var(--c-ink); }
+.notice--info  { border-left-color: var(--c-accent); }
+/* Пауза API на время заморозки (090): одна строка под шапкой на всех страницах. */
+.paused-banner { margin-top: var(--sp-3); }
+
+/* ==========================================================================
+   Backdrop — сетка, свечение и сеть точек
+   Два слоя, оба под содержимым (z-index: -1) и оба глухие к указателю.
+   .bg  — чистый CSS, есть на каждой странице и без JS: клетка и мягкое свечение.
+   .bg-net — канвас с точками, его рисует app.js и только там, где в разметке
+   стоит [data-bg-net] (сейчас это лендинг). Без JS и при prefers-reduced-motion
+   страница остаётся с одной статикой, а не с пустым местом.
+   ========================================================================== */
+
+.bg, .bg-net { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+
+.bg {
+  background-image:
+    radial-gradient(46rem 30rem at 84% -8%, var(--c-glow), transparent 70%),
+    repeating-linear-gradient(to right,  var(--c-grid-major) 0 1px, transparent 1px var(--grid-major)),
+    repeating-linear-gradient(to bottom, var(--c-grid-major) 0 1px, transparent 1px var(--grid-major)),
+    repeating-linear-gradient(to right,  var(--c-grid) 0 1px, transparent 1px var(--grid-cell)),
+    repeating-linear-gradient(to bottom, var(--c-grid) 0 1px, transparent 1px var(--grid-cell));
+}
+
+/* Точки живут в верхней части экрана и тают к низу: под плотными карточками
+   и таблицами они мешают читать. */
+.bg-net > canvas {
+  display: block; width: 100%; height: 100%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0 38%, rgba(0,0,0,.4) 72%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 0 38%, rgba(0,0,0,.4) 72%, transparent 100%);
+}
+
+@media print { .bg, .bg-net { display: none; } }
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+
+/* Первый экран отдан герою целиком: следующий блок должен начинаться за сгибом,
+   а не выглядывать из-под него краем. Вычитается шапка (--h-header), потому что
+   hero идёт сразу под ней. svh, а не vh: на телефоне vh считается по экрану без
+   адресной строки, и низ секции уезжает под неё. Строка с vh оставлена первой —
+   браузер без поддержки svh возьмёт её и получит почти то же самое.
+   Это min-height, а не height: на узком экране контент выше сгиба, и обрезать его
+   ради ровного экрана нельзя. */
+.hero {
+  display: grid; grid-template-columns: 1fr; gap: var(--sp-7);
+  align-items: start; align-content: center;
+  padding: var(--sp-7) 0;
+  min-height: calc(100vh - var(--h-header));
+  min-height: calc(100svh - var(--h-header));
+}
+.hero__title { font-size: clamp(32px, 6.2vw, 48px); line-height: var(--lh-tight); max-width: 18ch; }
+.lede { margin-top: var(--sp-4); font-size: var(--s-4); color: var(--c-ink-2); max-width: 54ch; }
+
+@media (min-width: 900px) {
+  .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: var(--sp-8); }
+}
+
+/* ==========================================================================
+   Live counters
+   ========================================================================== */
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--sp-5); }
+.stat__num {
+  font-family: var(--f-mono); font-variant-numeric: tabular-nums;
+  font-size: var(--s-7); line-height: 1.1; letter-spacing: -0.03em;
+}
+.stat__label { font-size: var(--s-2); color: var(--c-ink-2); margin-top: 2px; }
+.stats-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); margin-top: var(--sp-4); }
+
+/* ==========================================================================
+   Demo form
+   ========================================================================== */
+
+.demo { display: grid; gap: var(--sp-4); }
+.form { display: grid; gap: var(--sp-3); }
+.label { font-family: var(--f-mono); font-size: var(--s-1); letter-spacing: .08em; text-transform: uppercase; color: var(--c-ink-3); }
+.field-row { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.input {
+  flex: 1 1 260px; min-width: 0; width: 100%;
+  font-family: var(--f-mono); font-size: var(--s-2);
+  padding: 12px; color: var(--c-ink); background: var(--c-surface);
+  border: 1px solid var(--c-line-strong); border-radius: var(--r-2);
+}
+.input::placeholder { color: var(--c-ink-3); }
+.input[aria-invalid="true"] { border-color: var(--v-avoid-fg); box-shadow: 0 0 0 1px var(--v-avoid-fg); }
+.field-error { font-size: var(--s-2); color: var(--v-avoid-fg); }
+.hint { font-size: var(--s-2); color: var(--c-ink-3); }
+
+.progress {
+  height: 3px; border-radius: 2px; background: var(--c-surface-2); overflow: hidden;
+}
+.progress > span { display: block; height: 100%; width: 40%; background: var(--c-accent); }
+@media (prefers-reduced-motion: no-preference) {
+  .progress > span { animation: wb-slide 1.4s ease-in-out infinite; }
+}
+@keyframes wb-slide { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
+
+.status-line { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); font-size: var(--s-2); color: var(--c-ink-2); }
+
+/* ==========================================================================
+   Result card
+   ========================================================================== */
+
+.card {
+  background: var(--c-surface); border: 1px solid var(--c-line);
+  border-radius: var(--r-3); overflow: hidden;
+}
+.card__bar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-surface-2); border-bottom: 1px solid var(--c-line);
+}
+.card__body { padding: var(--sp-4); border-bottom: 1px solid var(--c-line); }
+.addr { font-family: var(--f-mono); font-size: var(--s-2); color: var(--c-ink-2); word-break: break-all; }
+.score-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--sp-4); margin-top: var(--sp-4); }
+.score {
+  font-family: var(--f-mono); font-variant-numeric: tabular-nums;
+  font-size: var(--s-8); line-height: .9; letter-spacing: -0.04em;
+}
+.verdict {
+  display: inline-block; font-family: var(--f-mono); font-size: var(--s-4); font-weight: 600;
+  padding: 4px 12px; border-radius: var(--r-2); border: 1px solid;
+}
+.verdict--ok      { color: var(--v-ok-fg);      background: var(--v-ok-bg);      border-color: var(--v-ok-border); }
+.verdict--caution { color: var(--v-caution-fg); background: var(--v-caution-bg); border-color: var(--v-caution-border); }
+.verdict--avoid   { color: var(--v-avoid-fg);   background: var(--v-avoid-bg);   border-color: var(--v-avoid-border); }
+.verdict--neutral { color: var(--v-neutral-fg); background: var(--v-neutral-bg); border-color: var(--v-neutral-border); }
+
+.score--ok { color: var(--v-ok-fg); }
+.score--caution { color: var(--v-caution-fg); }
+.score--avoid { color: var(--v-avoid-fg); }
+.score--neutral { color: var(--v-neutral-fg); }
+
+.track { height: 6px; border-radius: 3px; background: var(--c-surface-2); overflow: hidden; margin-top: var(--sp-4); }
+.track > span { display: block; height: 100%; background: currentColor; }
+.track-scale { display: flex; justify-content: space-between; font-family: var(--f-mono); font-variant-numeric: tabular-nums; font-size: var(--s-1); color: var(--c-ink-3); margin-top: var(--sp-1); }
+
+.flags { list-style: none; padding: var(--sp-2) 0; }
+.flag { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-2) var(--sp-3); padding: var(--sp-3) var(--sp-4); }
+.flag + .flag { border-top: 1px solid var(--c-line); }
+.flag__code { font-family: var(--f-mono); font-size: var(--s-2); }
+.flag__reason { font-size: var(--s-2); color: var(--c-ink-2); }
+.sev {
+  font-family: var(--f-mono); font-size: var(--s-1); line-height: 1.5;
+  border: 1px solid currentColor; border-radius: var(--r-1); padding: 1px 6px;
+  height: fit-content; white-space: nowrap;
+}
+.sev--low  { color: var(--sev-low); }
+.sev--med  { color: var(--sev-med); }
+.sev--high { color: var(--sev-high); }
+
+.flags-empty {
+  display: grid; gap: var(--sp-1); padding: var(--sp-4);
+  border-top: 1px solid var(--c-line); border-bottom: 1px solid var(--c-line);
+  background: var(--c-accent-soft);
+}
+.flags-empty strong { font-weight: 600; }
+
+.kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: var(--sp-3) var(--sp-4); margin: 0; padding: var(--sp-4); border-top: 1px solid var(--c-line); }
+.kv dt { font-family: var(--f-mono); font-size: var(--s-1); text-transform: uppercase; letter-spacing: .06em; color: var(--c-ink-3); }
+.kv dd { margin: 2px 0 0; font-family: var(--f-mono); font-variant-numeric: tabular-nums; font-size: var(--s-2); }
+.card__foot { margin: 0; padding: var(--sp-3) var(--sp-4); border-top: 1px solid var(--c-line); font-size: var(--s-2); color: var(--c-ink-3); }
+
+/* ==========================================================================
+   Code blocks & tables
+   ========================================================================== */
+
+.code {
+  margin: 0; padding: var(--sp-4);
+  background: var(--c-surface); border: 1px solid var(--c-line); border-radius: var(--r-2);
+  font-family: var(--f-mono); font-size: var(--s-2); line-height: 1.65;
+  color: var(--c-ink); overflow-x: auto; tab-size: 2;
+}
+.code .c { color: var(--c-ink-3); }
+
+.table-scroll { overflow-x: auto; border: 1px solid var(--c-line); border-radius: var(--r-2); }
+.table { width: 100%; border-collapse: collapse; font-size: var(--s-2); min-width: 480px; }
+.table th, .table td { text-align: left; padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--c-line); vertical-align: top; }
+.table thead th { background: var(--c-surface-2); font-family: var(--f-mono); font-size: var(--s-1); text-transform: uppercase; letter-spacing: .06em; color: var(--c-ink-2); white-space: nowrap; }
+.table tbody tr:last-child td { border-bottom: 0; }
+.table code { font-size: var(--s-2); color: var(--c-ink); }
+.table .req { color: var(--c-accent); font-family: var(--f-mono); font-size: var(--s-1); }
+
+/* ==========================================================================
+   Long-read typography (methodology, docs, articles)
+   ========================================================================== */
+
+.page-head { padding: var(--sp-6) 0 var(--sp-5); border-bottom: 1px solid var(--c-line); }
+.page-head h1 { font-size: clamp(26px, 5vw, var(--s-7)); line-height: 1.2; max-width: 22ch; }
+.page-meta { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-4); margin-top: var(--sp-3); font-size: var(--s-2); color: var(--c-ink-3); }
+
+.prose { max-width: var(--measure); font-size: var(--s-4); line-height: var(--lh-read); }
+.prose > * + * { margin-top: var(--sp-5); }
+.prose h2 { font-size: var(--s-6); line-height: 1.25; margin-top: var(--sp-8); scroll-margin-top: var(--sp-5); }
+.prose h3 { font-size: var(--s-5); line-height: 1.3; margin-top: var(--sp-6); scroll-margin-top: var(--sp-5); }
+.prose h2 + p, .prose h3 + p { margin-top: var(--sp-3); }
+.prose ul, .prose ol { padding-left: 1.3em; display: grid; gap: var(--sp-3); }
+.prose li { padding-left: .2em; }
+.prose li strong { font-weight: 650; }
+.prose blockquote {
+  margin: 0; padding: var(--sp-2) 0 var(--sp-2) var(--sp-5);
+  border-left: 3px solid var(--c-accent); color: var(--c-ink-2);
+}
+.prose figure { margin: 0; display: grid; gap: var(--sp-2); }
+.prose figcaption { font-size: var(--s-2); color: var(--c-ink-3); }
+.prose .code, .prose .table-scroll { font-size: var(--s-2); }
+
+/* --- Статья: две ширины и своя типографика (052 §5, M3) -------------------
+   Страница статьи живёт в контентной области сайта (1140 − отступы), а внутри неё есть
+   две ширины: колонка чтения и схема, которая шире колонки, но не во всю страницу.
+   Обе центрованы — текст и схема стоят на одной оси, а не уступом. */
+.article { max-width: calc(var(--w-page) - 2 * var(--sp-4)); margin: 0 auto; }
+.read-col { max-width: var(--w-text); margin-inline: auto; }
+
+.prose--article { max-width: none; }
+.prose--article > * { max-width: var(--w-text); margin-inline: auto; }
+
+/* Заголовок и текст в статье не должны отличаться только кеглем: длинный материал
+   разваливается на разделы взглядом, а не чтением. Отсюда три вещи разом — текст тише
+   заголовка на один тон, у h2 линия сверху, первый абзац работает лидом. */
+.prose--article { color: var(--c-ink-2); }
+.prose--article h2, .prose--article h3, .prose--article strong, .prose--article th { color: var(--c-ink); }
+.prose--article h2 {
+  margin-top: var(--sp-9);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--c-line);
+}
+.prose--article > p:first-child { font-size: var(--s-5); line-height: 1.55; color: var(--c-ink); }
+
+/* --- Схема в статье ------------------------------------------------------
+   Обычный блок в потоке: где написана — там и стоит. Ни обтекания текстом, ни второй
+   колонки (052 §4.2): вертикальный блок рядом с текстом требует пяти абзацев подряд и
+   разъезжается на каждой второй ширине окна.
+
+   Ширина блока — 80% контентной области, то есть шире колонки чтения: схема — не иллюстрация
+   внутри абзаца, а отдельный кадр. Высота при этом ограничена экраном: схемы нарисованы на
+   вертикальной сетке 350×560, и без потолка блок в 886 px даёт 1418 px высоты — кадр, который
+   целиком не виден никогда. Потолок сжимает схему целиком (SVG вписывается в бокс сам),
+   поэтому ни одна из них не перерисована. */
+.figure-block, .prose--article > .figure-block {
+  display: grid;
+  max-width: min(100%, var(--w-media));
+  margin-inline: auto;
+}
+.figure-block > * { min-width: 0; }
+.figure-block .film__stage,
+.figure-block .fig__stage {
+  max-width: none;
+  max-height: min(80vh, 780px);
+}
+
+/* Статичная схема: тот же набор примитивов, что у схемы-фильма, но без кадров и движка. */
+/* margin: 0 — своё, а не от `.prose figure`: у <figure> есть отступы по умолчанию
+   (0 40px), и вне прозы схема из-за них становится уже своего блока. */
+.fig { margin: 0; display: grid; justify-items: center; gap: var(--sp-3); }
+.fig__stage { display: block; width: 100%; height: auto; }
+/* Широкая схема на узком экране не сжимается до нечитаемого, а прокручивается вбок — тем
+   же способом, каким это уже решено у широкой таблицы (`.table-scroll`). Ниже 560 px
+   подписи в ней ушли бы под 12 px, а это не схема, а орнамент.
+
+   Прокручивается только сама схема, а не подпись под ней: подпись — текст, и уезжать
+   вбок вместе с картинкой ей незачем. Отсюда отдельная обёртка вокруг `<svg>`. */
+.fig__scroll { width: 100%; overflow-x: auto; }
+.fig__stage--wide { min-width: 560px; }
+/* Подпись схемы — своим правилом, а не от `.prose figcaption`: схема стоит и вне прозы
+   (полигон), и выглядеть там как обычный абзац она не должна. */
+.fig__caption { max-width: 62ch; font-size: var(--s-2); line-height: var(--lh-body); color: var(--c-ink-3); }
+
+/* Название схемы. На лендинге его роль играет h2 секции, в статье — своя строка: заголовок
+   раздела принадлежит статье, а не схеме. Он же работает титром в ролике 9:16 (052 §5, M1),
+   поэтому живёт в партиале, а не в шаблоне страницы. */
+.film__title {
+  font-family: var(--f-mono); font-size: var(--s-2); line-height: 1.35;
+  letter-spacing: .02em; color: var(--c-ink-2); text-align: center;
+}
+
+.ph {
+  border: 1px dashed var(--c-line-strong); border-radius: var(--r-2);
+  background: repeating-linear-gradient(135deg, transparent 0 8px, var(--c-surface-2) 8px 16px);
+  display: grid; place-items: center; min-height: 180px; padding: var(--sp-5);
+}
+.ph span { font-family: var(--f-mono); font-size: var(--s-2); color: var(--c-ink-3); text-align: center; }
+
+/* --- Content: article and report lists (051) ----------------------------- */
+
+.entry-list { list-style: none; display: grid; gap: var(--sp-6); }
+.entry { display: grid; gap: var(--sp-2); }
+.entry + .entry { border-top: 1px solid var(--c-line); padding-top: var(--sp-6); }
+.entry__date { font-family: var(--f-mono); font-size: var(--s-1); letter-spacing: .08em; text-transform: uppercase; color: var(--c-ink-3); }
+.entry__title { font-size: var(--s-5); line-height: 1.3; }
+.entry__title a { color: var(--c-ink); text-decoration: none; }
+.entry__title a:hover { color: var(--c-accent); text-decoration: underline; }
+.entry__lede { color: var(--c-ink-2); font-size: var(--s-3); line-height: var(--lh-body); max-width: var(--measure); }
+
+/* --- Table of contents -------------------------------------------------- */
+
+.toc {
+  border: 1px solid var(--c-line); border-radius: var(--r-2);
+  background: var(--c-surface); padding: var(--sp-4); display: grid; gap: var(--sp-3);
+}
+.toc h2, .toc p.toc__title { font-family: var(--f-mono); font-size: var(--s-1); letter-spacing: .08em; text-transform: uppercase; color: var(--c-ink-3); font-weight: 600; }
+.toc ol, .toc ul { list-style: none; display: grid; gap: var(--sp-2); font-size: var(--s-2); }
+.toc a { color: var(--c-ink-2); text-decoration: none; }
+.toc a:hover { color: var(--c-accent); text-decoration: underline; }
+
+.doc-layout { display: grid; grid-template-columns: 1fr; gap: var(--sp-6); padding: var(--sp-6) 0 var(--sp-8); }
+@media (min-width: 960px) {
+  .doc-layout { grid-template-columns: 220px minmax(0, 1fr); gap: var(--sp-8); align-items: start; }
+  .doc-layout .toc { position: sticky; top: var(--sp-5); }
+}
+
+/* ==========================================================================
+   Developers block, disclaimer, 404
+   ========================================================================== */
+
+.dev-grid { display: grid; grid-template-columns: 1fr; gap: var(--sp-5); align-items: start; }
+@media (min-width: 900px) { .dev-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: var(--sp-8); } }
+.price-line { font-family: var(--f-mono); font-size: var(--s-2); color: var(--c-ink-2); }
+.optional-line {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-3); align-items: baseline;
+  border: 1px dashed var(--c-line-strong); border-radius: var(--r-2); padding: var(--sp-3) var(--sp-4);
+  font-size: var(--s-2); color: var(--c-ink-2);
+}
+
+.disclaimer { max-width: 62ch; display: grid; gap: var(--sp-4); }
+.disclaimer p { font-size: var(--s-4); color: var(--c-ink-2); }
+
+.page-404 { padding: var(--sp-9) 0; display: grid; gap: var(--sp-4); max-width: 46ch; }
+.page-404 h1 { font-size: clamp(28px, 6vw, 40px); line-height: 1.15; }
+
+/* ==========================================================================
+   States playground (prototype-only scaffolding)
+   ========================================================================== */
+
+.lab { display: grid; gap: var(--sp-6); padding: var(--sp-6) 0 var(--sp-9); }
+.lab__item { display: grid; gap: var(--sp-3); }
+.lab__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-3); border-bottom: 1px solid var(--c-line); padding-bottom: var(--sp-2); }
+.lab__num { font-family: var(--f-mono); font-size: var(--s-1); color: var(--c-ink-3); }
+.lab__title { font-size: var(--s-5); }
+.lab__note { font-size: var(--s-2); color: var(--c-ink-3); max-width: var(--measure); }
+.lab__frame { max-width: 640px; }
+
+/* ==========================================================================
+   Утилиты вместо атрибута style
+   CSP витрины запрещает инлайновые стили (style-src 'self'), поэтому переносим
+   в классы то, что в прототипе стояло атрибутом. Обнаружено Lighthouse 11.08.2026:
+   полоса скора рисовалась во всю ширину, блок демо терял отбивку.
+   ========================================================================== */
+
+.u-mt-1 { margin-top: var(--sp-1); }
+.u-mt-2 { margin-top: var(--sp-2); }
+.u-mt-5 { margin-top: var(--sp-5); }
+.u-mt-6 { margin-top: var(--sp-6); }
+.u-h2 { font-size: var(--s-6); }
+.u-h3 { font-size: var(--s-5); }
+.u-flush-top { padding-top: 0; }
+
+.demo--split { margin-top: var(--sp-7); padding-top: var(--sp-5); border-top: 1px solid var(--c-line); }
+.dev-copy { color: var(--c-ink-2); max-width: 46ch; }
+.page-404 .lede-404 { color: var(--c-ink-2); font-size: var(--s-4); }
+
+/* Ширина полосы у живого результата задаётся из JS (CSSOM разрешён), у статичного
+   примера на лендинге — классом: атрибут style до браузера не доедет. */
+/* Ширина полосы = скор. В разметке она классом, а не инлайном (CSP), поэтому классов
+   ровно столько, сколько состояний в колоде. JS поверх этого анимирует ширину через CSSOM. */
+.track__fill--sample-ok { width: 72%; }
+.track__fill--sample-caution { width: 51%; }
+.track__fill--sample-avoid { width: 34%; }
+
+/* ==========================================================================
+   Колода вердиктов (герой лендинга)
+   Все состояния лежат в разметке, JS только переставляет is-live. Кадры стоят
+   в одной ячейке грида: высота блока — по самому высокому, соседи не прыгают.
+   Неактивный кадр visibility: hidden, а не display: none — так он уходит из
+   дерева доступности, но участвует в кросс-фейде.
+   ========================================================================== */
+
+.deck { display: grid; gap: var(--sp-3); --deck-dwell: 5s; }
+.deck__stack { display: grid; }
+.deck__card { grid-area: 1 / 1; align-self: start; visibility: hidden; opacity: 0; }
+.deck__card.is-live { visibility: visible; opacity: 1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .deck__card { transform: translateY(10px); transition: opacity .42s ease, transform .42s cubic-bezier(.2,.7,.3,1), visibility .42s; }
+  .deck__card.is-live { transform: none; }
+  .deck__card .track > span { transition: width .8s cubic-bezier(.4,0,.2,1); }
+  .deck__card.is-live .verdict { animation: wb-verdict .55s cubic-bezier(.2,.7,.3,1) both; }
+  .deck__card.is-live .flag { animation: wb-rise .45s ease both; }
+  .deck__card.is-live .flag:nth-child(2) { animation-delay: .07s; }
+  .deck__card.is-live .flag:nth-child(3) { animation-delay: .14s; }
+}
+
+/* Вспышка вердикта — в его собственном цвете: currentColor уже задан классом
+   verdict--ok / --caution / --avoid, отдельного токена на свечение не нужно. */
+@keyframes wb-verdict {
+  0%   { transform: scale(.9);  opacity: .35; box-shadow: none; }
+  55%  { box-shadow: 0 0 22px -4px currentColor; }
+  100% { transform: none; opacity: 1; box-shadow: none; }
+}
+@keyframes wb-rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ==========================================================================
+   Схема-фильм: четыре кадра в одном SVG
+   Общий движок для лендинга и будущих схем в статьях. Правила те же, что у колоды:
+   все кадры лежат в разметке, JS переставляет is-live, без JS остаётся первый кадр.
+   Рёбра статичны всегда — они и есть схема; движется только то, что течёт по ним.
+   ========================================================================== */
+
+.film { display: grid; gap: var(--sp-5); }
+.film__stage { display: block; width: 100%; height: auto; max-width: 780px; margin: 0 auto; }
+
+/* Раскладки одной и той же схемы: широкая (720×300) на десктопе, вертикальная (350×560)
+   на телефоне и в ролике 9:16. Кадры у них общие по смыслу и по классам — движок
+   переключает кадр во всех раскладках сразу, а показана всегда ровно одна.
+   Символы <defs> лежат отдельной скрытой сценой: одна копия id на обе раскладки.
+
+   Переключение висит на `.film--dual`, а не на самих раскладках: у схемы в статье
+   раскладка одна — вертикальная (052 §4.5), и она обязана быть видна на любой ширине.
+   Правило «спрятать вертикальную» без этого условия скрывало бы её насовсем. */
+.film__defs { display: none; }
+.film--dual .film__stage--tall { display: none; }
+
+@media (max-width: 700px) {
+  .film--dual .film__stage--wide { display: none; }
+  .film--dual .film__stage--tall { display: block; }
+}
+
+/* Вертикальная раскладка нарисована под узкий кадр, поэтому кегли в ней свои: viewBox
+   вдвое уже, и подписи широкой схемы читались бы в ней вдвое крупнее нужного. На экране
+   360 px это даёт 13 px эффективных у подписи узла — минимум, ниже которого текст в
+   схеме не имеет смысла. */
+:is(.film__stage--tall, .fig__stage) .film__label,
+:is(.film__stage--tall, .fig__stage) .film__word { font-size: 14px; }
+:is(.film__stage--tall, .fig__stage) .film__edge-label,
+:is(.film__stage--tall, .fig__stage) .film__tag-text { font-size: 13px; }
+
+/* Горизонтальная схема: та же кухня, но кегли в единицах viewBox крупнее.
+   Причина арифметическая: подпись обязана остаться не мельче 12 px на экране 360 px, то
+   есть быть не меньше 1/30 ширины viewBox. У вертикальной схемы (350) это 12-14 px, у
+   широкой (720) — 18-24. Правила стоят ПОСЛЕ общих: специфичность та же, решает порядок. */
+.fig__stage--wide .film__label,
+.fig__stage--wide .film__word { font-size: 18px; }
+.fig__stage--wide .film__note,
+.fig__stage--wide .film__addr,
+.fig__stage--wide .film__edge-label,
+.fig__stage--wide .film__legend-text,
+.fig__stage--wide .film__tag-text { font-size: 16px; }
+.fig__stage--wide .film__stat { font-size: 40px; }
+.fig__stage--wide .film__stat-note { font-size: 16px; }
+
+/* Тон задаётся один раз на группе, всё внутри берёт его через currentColor: так
+   перекраска узла — одно анимируемое свойство, а не пять. Тона общие у схемы-фильма и у
+   статичной схемы (`.fig`): рисуются они одним набором примитивов, и разойтись цветом
+   значило бы получить два разных языка на одной странице. */
+:is(.film, .fig) .tone-payer   { color: var(--c-ink-2); }
+:is(.film, .fig) .tone-ok      { color: var(--v-ok-fg); }
+:is(.film, .fig) .tone-caution { color: var(--v-caution-fg); }
+:is(.film, .fig) .tone-avoid   { color: var(--v-avoid-fg); }
+:is(.film, .fig) .tone-us    { color: var(--c-accent); }
+:is(.film, .fig) .tone-chain { color: var(--c-focus); }
+:is(.film, .fig) .tone-dead  { color: var(--c-ink-3); }
+
+.film__box { fill: var(--c-surface); stroke: currentColor; stroke-width: 2; }
+.film__glyph { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.film__glyph-dot { fill: currentColor; }
+
+.film__label { fill: currentColor; font-family: var(--f-mono); font-size: 13px; text-anchor: middle; }
+.film__word { fill: currentColor; font-family: var(--f-mono); font-size: 13px; letter-spacing: .1em; text-anchor: middle; }
+.film__edge-label { fill: currentColor; font-family: var(--f-mono); font-size: 12px; text-anchor: middle; }
+.film__legend-text { fill: var(--c-ink-2); font-family: var(--f-mono); font-size: 13px; }
+
+/* Подпись сбоку от вертикального ребра: у горизонтальных подписей якорь по центру
+   ребра, у вертикальных центрировать не по чему — они стоят колонкой справа. */
+.film__edge-label--aside,
+.film__label--aside { text-anchor: start; }
+
+.film__edge { fill: none; stroke: currentColor; stroke-width: 2; }
+/* Пунктир — не украшение: им нарисовано то, чего не произошло (возврат, который не
+   пришёл; платёж, который не ушёл). Рядом с ним всегда стоит слово. */
+.film__edge--dead { stroke-dasharray: 6 7; opacity: .55; }
+.film__tip { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.film__pkt { opacity: 0; }
+.film__pkt-core { fill: currentColor; }
+.film__pkt-halo { fill: currentColor; opacity: .16; }
+
+.film__shield-plate { fill: var(--c-surface); stroke: currentColor; stroke-width: 2; }
+.film__shield-mark { fill: none; stroke: currentColor; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+
+.film__bee { color: var(--v-ok-fg); opacity: .6; }
+.film__bee--bad { color: var(--v-avoid-fg); opacity: 1; }
+
+.film__tag-box { fill: var(--v-avoid-bg); stroke: currentColor; stroke-width: 1.5; }
+.film__tag-text { fill: currentColor; font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-anchor: middle; }
+.film__cross { color: var(--v-avoid-fg); fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; }
+/* Ярлык без вердикта: у ярлыка из кадра про мошенника заливка красная по смыслу — это
+   обвинение. Пометка «использован один раз» обвинением не является. */
+.film__tag-box--calm { fill: var(--c-surface-2); }
+
+/* --- Примитивы схем про популяцию адресов (052 §5, M3) --------------------
+   Ими нарисованы схема жизни адреса и обе статичные схемы статьи. Живут рядом с
+   примитивами схемы-фильма и по тем же правилам: цвет — только тоном на группе,
+   смысл — словом рядом. */
+
+/* Ячейка сетки «весь индекс»: адрес, которого больше нет, — серый И пунктирный,
+   а в легенде рядом стоит слово. Одного цвета мало по правилу бренда. */
+.film__cell--dead { stroke-dasharray: 5 6; }
+
+/* Адрес внутри коробки. У статичных схем узел — это адрес, и подписан он тем, чем и
+   является: глиф агента там врал бы (платит агент, получает адрес). */
+.film__addr { fill: currentColor; font-family: var(--f-mono); font-size: 13px; text-anchor: middle; }
+
+/* Крупное число — то единственное, ради чего кадр существует. */
+.film__stat { fill: currentColor; font-family: var(--f-mono); font-size: 34px; text-anchor: middle; }
+.film__stat-note { fill: var(--c-ink-2); font-family: var(--f-mono); font-size: 14px; text-anchor: middle; }
+
+/* Ось времени: отметка события и кольцо вокруг той, где ещё можно действовать. */
+.film__mark { fill: var(--c-surface); stroke: currentColor; stroke-width: 2; }
+.film__ring { fill: none; stroke: currentColor; stroke-width: 2; opacity: 0; }
+
+/* Доля в столбике распределения: читается длиной, подписана словом и числом. */
+.film__bar { fill: currentColor; fill-opacity: .18; stroke: currentColor; stroke-width: 1.5; }
+.film__lead { fill: none; stroke: var(--c-line-strong); stroke-width: 1; }
+.film__note { fill: var(--c-ink-3); font-family: var(--f-mono); font-size: 13px; }
+/* Модификатор — после базового класса: с той же специфичностью решает порядок в файле,
+   и объявленный выше он молча проиграл бы (грабля из M2). */
+.film__note--mid { text-anchor: middle; }
+
+/* Состояния, которые кадр доигрывает до конца: в покое их не видно. */
+.film__word--after, .film__tag, .film__cross { opacity: 0; }
+.film__node--turns { color: var(--c-ink-2); }
+/* Узел, который не краснеет, а гаснет: адрес не оказался мошенником — он просто больше
+   никогда не появился. Разница смысловая, поэтому и класс отдельный. */
+.film__node--fades { color: var(--c-ink-2); }
+/* Кольцо вокруг отметки на оси времени: в покое его нет, оно только пульсирует. */
+.film__ring { transform-box: fill-box; transform-origin: center; }
+
+/* Сколько держится кадр. Живёт рядом со схемой, а не в JS: движок читает --dwell
+   с самого кадра, поэтому длительность и таймлайн анимации правит один человек
+   в одном месте. */
+.film__beat--trade  { --dwell: 6s; }
+.film__beat--swarm  { --dwell: 5s; }
+.film__beat--scam   { --dwell: 6.5s; }
+.film__beat--shield { --dwell: 8s; }
+
+/* Схема «жизнь адреса» — статья про одноразовые адреса (052 §5, M3). Цикл 24.5 с. */
+.film__beat--merchant { --dwell: 6.5s; }
+.film__beat--once     { --dwell: 6s; }
+.film__beat--scale    { --dwell: 5.5s; }
+.film__beat--window   { --dwell: 6.5s; }
+
+.film__beat { visibility: hidden; opacity: 0; }
+.film__beat.is-live { visibility: visible; opacity: 1; }
+
+.film__captions { display: grid; }
+.film__caption {
+  grid-area: 1 / 1; margin: 0 auto; max-width: 62ch;
+  text-align: center; color: var(--c-ink-2); font-size: var(--s-4); line-height: var(--lh-body);
+  visibility: hidden; opacity: 0;
+}
+.film__caption.is-live { visibility: visible; opacity: 1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .film__beat, .film__caption { transition: opacity .45s ease, visibility .45s; }
+
+  /* --- Кадр 1: платёж туда, товар обратно ----------------------------- */
+  .film__beat--trade.is-live .film__node { animation: wb-rise .5s ease both; }
+  .film__beat--trade.is-live .film__node--seller { animation-delay: .12s; }
+  .film__stage--wide .film__beat--trade.is-live .film__pkt--pay  { animation: wb-pkt-right 1.8s .5s linear both; }
+  .film__stage--wide .film__beat--trade.is-live .film__pkt--back { animation: wb-pkt-left 1.8s 2.9s linear both; }
+  .film__stage--tall .film__beat--trade.is-live .film__pkt--pay  { animation: wb-pkt-down 1.8s .5s linear both; }
+  .film__stage--tall .film__beat--trade.is-live .film__pkt--back { animation: wb-pkt-up 1.8s 2.9s linear both; }
+  .film__beat--trade.is-live .film__node--seller .film__box { animation: wb-box-hit .6s 2.2s ease both; }
+
+  /* --- Кадр 2: рой ----------------------------------------------------- */
+  .film__beat--swarm.is-live .film__bee { animation: wb-bee-in .45s var(--delay, 0s) ease both; }
+  /* Красные приходят последними и потом дышат: глаз находит их сам, но слово в
+     легенде всё равно стоит рядом — цвет один смысла не несёт. */
+  .film__beat--swarm.is-live .film__bee--bad {
+    animation: wb-bee-in-bad .45s var(--delay, 0s) ease both, wb-bee-alarm 1.6s ease-in-out 1.1s infinite;
+  }
+  .film__beat--swarm.is-live .film__legend { animation: wb-rise .5s .9s ease both; }
+
+  /* --- Кадр 3: платёж ушёл, ответа нет --------------------------------- */
+  .film__beat--scam.is-live .film__node { animation: wb-rise .5s ease both; }
+  .film__stage--wide .film__beat--scam.is-live .film__pkt--pay { animation: wb-pkt-right 1.8s .5s linear both; }
+  .film__stage--tall .film__beat--scam.is-live .film__pkt--pay { animation: wb-pkt-down 1.8s .5s linear both; }
+  .film__beat--scam.is-live .film__node--turns .film__box { animation: wb-box-hit .6s 2.2s ease both; }
+  .film__beat--scam.is-live .film__cross { animation: wb-pop .5s 3.4s ease both; }
+  .film__beat--scam.is-live .tone-dead .film__edge-label { animation: wb-rise .5s 3.4s ease both; }
+  .film__beat--scam.is-live .film__node--turns { animation: wb-turn-red .9s 4s ease both; }
+  .film__beat--scam.is-live .film__word--before { animation: wb-fade-out .4s 4s ease both; }
+  .film__beat--scam.is-live .film__word--after { animation: wb-pop .5s 4.4s ease both; }
+  .film__beat--scam.is-live .film__tag { animation: wb-rise .5s 4.8s ease both; }
+
+  /* --- Кадр 4: щит ------------------------------------------------------ */
+  .film__beat--shield.is-live .film__node { animation: wb-rise .5s ease both; }
+  .film__beat--shield.is-live .film__shield { animation: wb-rise .5s .1s ease both, wb-shield-pulse 8s linear .1s both; }
+  .film__stage--wide .film__beat--shield.is-live .film__pkt--probe  { animation: wb-pkt-bounce 2.8s .6s ease-in-out both; }
+  .film__stage--wide .film__beat--shield.is-live .film__pkt--probe2 { animation: wb-pkt-probe 1s 4s linear both; }
+  .film__stage--wide .film__beat--shield.is-live .film__pkt--let    { animation: wb-pkt-diag 1.3s 5.1s linear both; }
+  .film__stage--tall .film__beat--shield.is-live .film__pkt--probe  { animation: wb-pkt-v-bounce 2.8s .6s ease-in-out both; }
+  .film__stage--tall .film__beat--shield.is-live .film__pkt--probe2 { animation: wb-pkt-v-probe 1s 4s linear both; }
+  .film__stage--tall .film__beat--shield.is-live .film__pkt--let    { animation: wb-pkt-v-diag 1.3s 5.1s linear both; }
+  .film__beat--shield.is-live .film__node--block .film__box { animation: wb-box-hit .7s 1.9s ease both; }
+  .film__beat--shield.is-live .film__node--pass .film__box  { animation: wb-box-hit .7s 6.3s ease both; }
+
+  /* ======================================================================
+     Схема «жизнь адреса»: как долго живёт адрес, которому платят (052 §5, M3)
+     Задержка входа приходит переменной --delay, а не отдельным правилом с
+     animation-delay: сокращение `animation` в правиле кадра сбрасывает задержку в 0,
+     и правило-задержка с меньшей специфичностью молча проигрывает ему.
+     ====================================================================== */
+
+  /* --- Кадр 1: адрес, который держат годами --------------------------- */
+  .film__beat--merchant.is-live .film__node { animation: wb-rise .5s var(--delay, 0s) ease both; }
+  .film__beat--merchant.is-live .film__pkt--p1 { animation: wb-life-p1 1.4s .5s linear both; }
+  .film__beat--merchant.is-live .film__pkt--p2 { animation: wb-life-p2 1.4s 1.9s linear both; }
+  .film__beat--merchant.is-live .film__pkt--p3 { animation: wb-life-p3 1.4s 3.3s linear both; }
+  /* Три прихода денег — один анимация с тремя вспышками: три отдельные анимации одного и
+     того же свойства с разными задержками спорят за него заливкой (both). */
+  .film__beat--merchant.is-live .film__node--keeps .film__box { animation: wb-life-hits 5s 1.3s linear both; }
+  .film__beat--merchant.is-live .film__tag { animation: wb-rise .5s 5s ease both; }
+
+  /* --- Кадр 2: адрес, которому заплатили один раз --------------------- */
+  .film__beat--once.is-live .film__node { animation: wb-rise .5s var(--delay, 0s) ease both; }
+  .film__beat--once.is-live .film__pkt--pay { animation: wb-pkt-down 1.8s .5s linear both; }
+  .film__beat--once.is-live .film__node--fades .film__box { animation: wb-box-hit .6s 2.2s ease both; }
+  .film__beat--once.is-live .film__node--fades { animation: wb-rise .5s .12s ease both, wb-turn-grey .9s 3.2s ease both; }
+  .film__beat--once.is-live .film__word--before { animation: wb-fade-out .4s 3.2s ease both; }
+  .film__beat--once.is-live .film__word--after { animation: wb-pop .5s 3.6s ease both; }
+  .film__beat--once.is-live .film__tag { animation: wb-rise .5s 4.2s ease both; }
+
+  /* --- Кадр 3: вся популяция ------------------------------------------ */
+  .film__beat--scale.is-live .film__cell { animation: wb-rise .5s var(--delay, 0s) ease both; }
+  .film__beat--scale.is-live .film__stat { animation: wb-pop .5s 1.5s ease both; }
+  .film__beat--scale.is-live .film__stat-note { animation: wb-rise .5s 1.7s ease both; }
+  .film__beat--scale.is-live .film__legend { animation: wb-rise .5s 2s ease both; }
+
+  /* --- Кадр 4: единственный момент, когда можно действовать ----------- */
+  .film__beat--window.is-live .film__step { animation: wb-rise .5s var(--delay, 0s) ease both; }
+  .film__beat--window.is-live .film__ring { animation: wb-ring 2.4s 1.9s ease-out infinite; }
+
+  /* Читают схему — время не идёт. */
+  /* Пауза — только по наведению на саму схему. Раньше сюда входил и :focus-within,
+     но после клика фокус остаётся на кнопке кадра, и новый кадр застывал недоигранным. */
+  .film__stage:hover .film__beat * { animation-play-state: paused; }
+}
+
+/* Задержки входа — одной шкалой на все схемы и переменной, а не свойством animation-delay.
+   Причина найдена в бою: правило кадра задаёт анимацию сокращением `animation`, а оно
+   сбрасывает animation-delay в 0. Правило-задержка с меньшей специфичностью проигрывает
+   ему молча — ступенчатый вход роя на лендинге так и не работал, все 32 элемента
+   появлялись разом. Переменная в спор за одно свойство не вступает. */
+.film__d0 { --delay: .05s; }
+.film__d1 { --delay: .15s; }
+.film__d2 { --delay: .25s; }
+.film__d3 { --delay: .35s; }
+.film__d4 { --delay: .45s; }
+.film__d5 { --delay: .55s; }
+.film__d6 { --delay: .65s; }
+
+@keyframes wb-pkt-right { 0% { opacity: 0; transform: none; } 10%, 88% { opacity: 1; } 100% { opacity: 0; transform: translateX(420px); } }
+@keyframes wb-pkt-left  { 0% { opacity: 0; transform: none; } 10%, 88% { opacity: 1; } 100% { opacity: 0; transform: translateX(-420px); } }
+@keyframes wb-pkt-probe { 0% { opacity: 0; transform: none; } 12%, 85% { opacity: 1; } 100% { opacity: 0; transform: translateX(170px); } }
+@keyframes wb-pkt-diag  { 0% { opacity: 0; transform: none; } 10%, 88% { opacity: 1; } 100% { opacity: 0; transform: translate(190px, -59px); } }
+
+/* То же движение в вертикальной раскладке. Длительности общие с широкой — по ним
+   выставлены вспышки узлов, которые от геометрии не зависят; разные только расстояния. */
+@keyframes wb-pkt-down    { 0% { opacity: 0; transform: none; } 10%, 88% { opacity: 1; } 100% { opacity: 0; transform: translateY(198px); } }
+@keyframes wb-pkt-up      { 0% { opacity: 0; transform: none; } 10%, 88% { opacity: 1; } 100% { opacity: 0; transform: translateY(-198px); } }
+@keyframes wb-pkt-v-probe { 0% { opacity: 0; transform: none; } 12%, 85% { opacity: 1; } 100% { opacity: 0; transform: translateY(82px); } }
+@keyframes wb-pkt-v-diag  { 0% { opacity: 0; transform: none; } 10%, 88% { opacity: 1; } 100% { opacity: 0; transform: translate(-74px, 93px); } }
+
+/* Платёж мошеннику доходит до щита и возвращается плательщику. Обратно он идёт уже
+   красным: те же деньги, но с вердиктом. */
+@keyframes wb-pkt-bounce {
+  0%   { opacity: 0; transform: none; color: var(--c-focus); }
+  10%  { opacity: 1; }
+  42%  { transform: translateX(170px); color: var(--c-focus); }
+  52%  { transform: translateX(170px); color: var(--v-avoid-fg); }
+  92%  { opacity: 1; }
+  100% { opacity: 0; transform: none; color: var(--v-avoid-fg); }
+}
+
+@keyframes wb-pkt-v-bounce {
+  0%   { opacity: 0; transform: none; color: var(--c-focus); }
+  10%  { opacity: 1; }
+  42%  { transform: translateY(82px); color: var(--c-focus); }
+  52%  { transform: translateY(82px); color: var(--v-avoid-fg); }
+  92%  { opacity: 1; }
+  100% { opacity: 0; transform: none; color: var(--v-avoid-fg); }
+}
+
+@keyframes wb-shield-pulse {
+  0%, 18%, 32%, 58%, 72%, 100% { filter: none; }
+  24%, 65% { filter: drop-shadow(0 0 18px currentColor); }
+}
+
+@keyframes wb-box-hit {
+  0%, 100% { stroke-width: 2; filter: none; }
+  32%      { stroke-width: 3.4; filter: drop-shadow(0 0 16px currentColor); }
+}
+
+/* Три платежа на один и тот же адрес: расстояния разные, потому что рёбра сходятся
+   в одну точку сверху — это и есть картинка «адрес, к которому возвращаются». */
+@keyframes wb-life-p1 { 0% { opacity: 0; transform: none; } 10%, 88% { opacity: 1; } 100% { opacity: 0; transform: translate(90px, 258px); } }
+@keyframes wb-life-p2 { 0% { opacity: 0; transform: none; } 10%, 88% { opacity: 1; } 100% { opacity: 0; transform: translateY(258px); } }
+@keyframes wb-life-p3 { 0% { opacity: 0; transform: none; } 10%, 88% { opacity: 1; } 100% { opacity: 0; transform: translate(-90px, 258px); } }
+
+@keyframes wb-life-hits {
+  0%, 8%, 20%, 36%, 48%, 64%, 76%, 100% { stroke-width: 2; filter: none; }
+  12%, 40%, 68% { stroke-width: 3.4; filter: drop-shadow(0 0 16px currentColor); }
+}
+
+/* Адрес не покраснел, а погас: денег больше не приходило, и о нём нечего сказать. */
+@keyframes wb-turn-grey { from { color: var(--c-ink-2); opacity: 1; } to { color: var(--c-ink-3); opacity: .55; } }
+@keyframes wb-ring { 0% { opacity: .75; transform: scale(.62); } 70%, 100% { opacity: 0; transform: scale(1.4); } }
+
+@keyframes wb-turn-red { from { color: var(--c-ink-2); } to { color: var(--v-avoid-fg); } }
+@keyframes wb-bee-in { from { opacity: 0; transform: translateY(5px); } to { opacity: .6; transform: none; } }
+@keyframes wb-bee-in-bad { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+@keyframes wb-bee-alarm { 0%, 100% { filter: none; } 50% { filter: drop-shadow(0 0 9px currentColor); } }
+@keyframes wb-pop { 0% { opacity: 0; transform: scale(.82); } 100% { opacity: 1; transform: none; } }
+@keyframes wb-fade-out { to { opacity: 0; } }
+
+/* Раньше здесь стоял мобильный костыль: широкая схема сжималась вместе с viewBox, и
+   подписи в ней уезжали в нечитаемые 6 px, поэтому на узком экране кегль поднимался.
+   Костыль снят вместе с причиной — на ≤700 px показывается вертикальная раскладка,
+   нарисованная под этот размер (052 §5, M2). */
+
+/* Переключатели кадров. Открывает их JS: без него они ничего не делают. */
+.film__controls { display: flex; justify-content: center; gap: var(--sp-2); }
+.film__dot { appearance: none; background: none; border: 0; padding: var(--sp-2); line-height: 0; cursor: pointer; }
+.film__dot-mark { display: block; width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--c-line-strong); }
+.film__dot:hover .film__dot-mark { border-color: var(--c-accent); }
+.film__dot[aria-current="true"] .film__dot-mark { background: var(--c-accent); border-color: var(--c-accent); box-shadow: var(--sh-neon-soft); }
+
+/* Движение выключено — значит, кадр обязан быть законченной картинкой сам по себе:
+   то, что в анимации доигрывается к концу (вердикт, ярлык, крест), здесь стоит на
+   месте сразу. Иначе кадры 2-4, открытые кнопкой, показывали бы полусобранную схему. */
+@media (prefers-reduced-motion: reduce) {
+  .film__word--after, .film__tag, .film__cross { opacity: 1; }
+  .film__word--before { opacity: 0; }
+  .film__node--turns { color: var(--v-avoid-fg); }
+  .film__node--fades { color: var(--c-ink-3); opacity: .55; }
+}

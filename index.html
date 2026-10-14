@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WalletBureau — risk scores for x402 payment addresses on Base</title>
+  <meta name="description" content="Check who your agent is about to pay. A 0-100 score, a verdict and explained risk flags for any Base address, from its full x402 payment history. $0.01 per check, no signup.">
+  <link rel="canonical" href="https://walletbureau.com/">
+  <link rel="alternate" hreflang="en" href="https://walletbureau.com/">
+  <link rel="alternate" hreflang="x-default" href="https://walletbureau.com/">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WalletBureau">
+  <meta property="og:title" content="WalletBureau — risk scores for x402 payment addresses on Base">
+  <meta property="og:description" content="Check who your agent is about to pay. A 0-100 score, a verdict and explained risk flags for any Base address, from its full x402 payment history. $0.01 per check, no signup.">
+  <meta property="og:url" content="https://walletbureau.com/">
+  <meta property="og:locale" content="en">
+  <meta property="og:image" content="https://walletbureau.com/assets/og.6d1ebcde.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="WalletBureau — risk signals for x402 agent payments, with the three verdicts: ok, caution, avoid">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.9ba3d42b.png">
+  <link rel="stylesheet" href="/assets/styles.d8f90657.css">
+  
+  
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"WalletBureau","url":"https://walletbureau.com/","description":"Check who your agent is about to pay. A 0-100 score, a verdict and explained risk flags for any Base address, from its full x402 payment history. $0.01 per check, no signup."},{"@type":"WebSite","name":"WalletBureau","url":"https://walletbureau.com/"}]}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="bg" aria-hidden="true"></div>
+<div class="wrap">
+  <header class="site-header">
+    <a class="brand" href="/"><img class="brand__mark" src="/assets/logo-mark.a612749c.png" width="82" height="96" alt="" aria-hidden="true"><span class="brand__name">Wallet<span class="brand__name--accent">Bureau</span></span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="/methodology">Methodology</a>
+      <a href="/docs">Docs</a>
+      <a href="/articles">Articles</a>
+      <a href="/docs#endpoints">API</a>
+    </nav>
+  </header>
+
+  <div class="notice notice--info paused-banner" role="status"><p><strong>The API is paused.</strong> Since October 2026 the scoring API and the MCP server are offline. The methodology and articles stay here. <a href="mailto:support@walletbureau.com">Write to us to hear when it is back.</a></p></div>
+  <main id="main">
+
+        <div class="bg-net" data-bg-net aria-hidden="true"></div>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <h1 class="hero__title" id="hero-title">Before your agent pays a stranger — ask us for a cent.</h1>
+        <p class="lede">WalletBureau scores x402 payment addresses on Base from their full on-chain history: a 0-100 score, a verdict, and the reasons behind it.</p>
+        <div class="btn-row u-mt-5">
+          
+          <a class="btn btn--primary" href="/articles">Read the articles</a>
+          <a href="/methodology">How it works →</a>
+        </div>
+
+        
+      </div>
+
+            <div class="deck" data-sample-deck>
+        <div class="deck__stack">
+        <article class="card deck__card is-live" aria-label="Sample check result" data-sample-card>
+          <div class="card__bar">
+            <span class="eyebrow">GET /v1/score</span>
+            <span class="tag">sample</span>
+          </div>
+          <div class="card__body score--ok">
+            <p class="addr">0xc41e9a…7d30</p>
+            <div class="score-row">
+              <p class="score">72</p>
+              <div>
+                <p class="eyebrow">Verdict</p>
+                <p class="verdict verdict--ok u-mt-1">ok</p>
+              </div>
+            </div>
+            <div class="track"><span class="track__fill--sample-ok"></span></div>
+            <p class="track-scale"><span>0</span><span>100</span></p>
+          </div>
+          <ul class="flags">
+          <li class="flag">
+            <div>
+              <p class="flag__code" data-literal>low_activity</p>
+              <p class="flag__reason">Fewer than 20 incoming payments in its whole history</p>
+            </div>
+            <span class="sev sev--low">low</span>
+          </li>
+          </ul>
+          <dl class="kv">
+            <div><dt>First seen</dt><dd>2025-11-19</dd></div>
+            <div><dt>Transfers in / out</dt><dd>2,410 / 1,988</dd></div>
+            <div><dt>Volume in / out</dt><dd>$184,220.50 / $180,004.12</dd></div>
+            <div><dt>Distinct payers</dt><dd>612</dd></div>
+            <div><dt>Confidence basis</dt><dd data-literal>confirmed</dd></div>
+          </dl>
+          <p class="card__foot">This is the same JSON the paid API returns. Sample data.</p>
+        </article>
+        <article class="card deck__card" aria-label="Sample check result" data-sample-card>
+          <div class="card__bar">
+            <span class="eyebrow">GET /v1/score</span>
+            <span class="tag">sample</span>
+          </div>
+          <div class="card__body score--caution">
+            <p class="addr">0x53b7f2…a19c</p>
+            <div class="score-row">
+              <p class="score">51</p>
+              <div>
+                <p class="eyebrow">Verdict</p>
+                <p class="verdict verdict--caution u-mt-1">caution</p>
+              </div>
+            </div>
+            <div class="track"><span class="track__fill--sample-caution"></span></div>
+            <p class="track-scale"><span>0</span><span>100</span></p>
+          </div>
+          <ul class="flags">
+          <li class="flag">
+            <div>
+              <p class="flag__code" data-literal>oneoff_pattern</p>
+              <p class="flag__reason">Most payers paid it exactly once and never came back</p>
+            </div>
+            <span class="sev sev--med">med</span>
+          </li>
+          </ul>
+          <dl class="kv">
+            <div><dt>First seen</dt><dd>2026-05-02</dd></div>
+            <div><dt>Transfers in / out</dt><dd>316 / 9</dd></div>
+            <div><dt>Volume in / out</dt><dd>$1,940.75 / $220.40</dd></div>
+            <div><dt>Distinct payers</dt><dd>297</dd></div>
+            <div><dt>Confidence basis</dt><dd data-literal>confirmed+probable</dd></div>
+          </dl>
+          <p class="card__foot">This is the same JSON the paid API returns. Sample data.</p>
+        </article>
+        <article class="card deck__card" aria-label="Sample check result" data-sample-card>
+          <div class="card__bar">
+            <span class="eyebrow">GET /v1/score</span>
+            <span class="tag">sample</span>
+          </div>
+          <div class="card__body score--avoid">
+            <p class="addr">0x8f3a1c2b…b1c2</p>
+            <div class="score-row">
+              <p class="score">34</p>
+              <div>
+                <p class="eyebrow">Verdict</p>
+                <p class="verdict verdict--avoid u-mt-1">avoid</p>
+              </div>
+            </div>
+            <div class="track"><span class="track__fill--sample-avoid"></span></div>
+            <p class="track-scale"><span>0</span><span>100</span></p>
+          </div>
+          <ul class="flags">
+          <li class="flag">
+            <div>
+              <p class="flag__code" data-literal>new_address</p>
+              <p class="flag__reason">First seen in x402/EIP-3009 data 4 days ago (younger than 7 days)</p>
+            </div>
+            <span class="sev sev--high">high</span>
+          </li>
+          <li class="flag">
+            <div>
+              <p class="flag__code" data-literal>oneoff_pattern</p>
+              <p class="flag__reason">94% of 128 counterparties made exactly one deal</p>
+            </div>
+            <span class="sev sev--med">med</span>
+          </li>
+          <li class="flag">
+            <div>
+              <p class="flag__code" data-literal>linked_to_flagged</p>
+              <p class="flag__reason">One hop from an address labeled as scam (0x41d2…8ba9)</p>
+            </div>
+            <span class="sev sev--med">med</span>
+          </li>
+          </ul>
+          <dl class="kv">
+            <div><dt>First seen</dt><dd>2026-08-06</dd></div>
+            <div><dt>Transfers in / out</dt><dd>128 / 3</dd></div>
+            <div><dt>Volume in / out</dt><dd>$604.31 / $12.05</dd></div>
+            <div><dt>Distinct payers</dt><dd>128</dd></div>
+            <div><dt>Confidence basis</dt><dd data-literal>confirmed+probable</dd></div>
+          </dl>
+          <p class="card__foot">This is the same JSON the paid API returns. Sample data.</p>
+        </article>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <section class="section" aria-labelledby="film-title">
+  <div class="film film--dual" data-film>
+    <div class="stack">
+      <h2 class="u-h2" id="film-title">Four frames: why the call comes before the payment</h2>
+      <p class="dev-copy">Same swarm, same USDC, same x402 handshake. The only difference is whether your agent knew who it was paying.</p>
+    </div>
+
+        <svg class="film__defs" aria-hidden="true" focusable="false">
+      <defs>
+        <symbol id="wb-agent" viewBox="0 0 40 40">
+          <circle class="film__glyph-dot" cx="20" cy="4.5" r="2.2"/>
+          <path class="film__glyph" d="M20 6.7V11"/>
+          <rect class="film__glyph" x="8" y="11" width="24" height="19" rx="6.5"/>
+          <circle class="film__glyph-dot" cx="15" cy="20.5" r="2"/>
+          <circle class="film__glyph-dot" cx="25" cy="20.5" r="2"/>
+          <path class="film__glyph" d="M14.5 30v4M25.5 30v4"/>
+        </symbol>
+        <path id="wb-shield" d="M42 2 78 14v30c0 24-16 38-36 44C22 82 6 68 6 44V14Z"/>
+      </defs>
+    </svg>
+
+    <svg class="film__stage film__stage--wide" viewBox="0 0 720 300" role="img" aria-label="Animated diagram: an honest trade, the swarm it happens in, a payment that never comes back, and a score check that stops it." focusable="false" data-film-stage>
+
+            <g class="film__beat film__beat--trade is-live" data-film-beat>
+        <g class="film__node tone-payer">
+          <rect class="film__box" x="64" y="140" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="77" y="153" width="46" height="46"/>
+          <text class="film__label" x="100" y="234">paying agent</text>
+        </g>
+
+        <g class="film__node film__node--seller tone-ok">
+          <rect class="film__box" x="584" y="140" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="597" y="153" width="46" height="46"/>
+          <text class="film__label" x="620" y="234">seller agent</text>
+          <text class="film__word" x="620" y="126">ok</text>
+        </g>
+
+        <g class="tone-chain">
+          <path class="film__edge" d="M144 158H572"/>
+          <path class="film__tip" d="M564 152l8 6-8 6"/>
+          <text class="film__edge-label" x="358" y="146" data-literal>USDC · Base</text>
+          <g transform="translate(150,158)"><g class="film__pkt film__pkt--pay"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+        </g>
+
+        <g class="tone-ok">
+          <path class="film__edge" d="M576 194H148"/>
+          <path class="film__tip" d="M156 188l-8 6 8 6"/>
+          <text class="film__edge-label film__edge-label--under" x="358" y="214">data, files, an answer</text>
+          <g transform="translate(570,194)"><g class="film__pkt film__pkt--back"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+        </g>
+      </g>
+
+            <g class="film__beat film__beat--swarm" data-film-beat>
+        <use class="film__bee film__bee--good film__d0" href="#wb-agent" x="151" y="63" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d1" href="#wb-agent" x="207" y="63" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d2" href="#wb-agent" x="263" y="63" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d3" href="#wb-agent" x="319" y="63" width="26" height="26"/>
+        <use class="film__bee film__bee--bad  film__d4" href="#wb-agent" x="375" y="63" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d5" href="#wb-agent" x="431" y="63" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d0" href="#wb-agent" x="487" y="63" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d1" href="#wb-agent" x="543" y="63" width="26" height="26"/>
+
+        <use class="film__bee film__bee--good film__d3" href="#wb-agent" x="151" y="107" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d4" href="#wb-agent" x="207" y="107" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d5" href="#wb-agent" x="263" y="107" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d0" href="#wb-agent" x="319" y="107" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d1" href="#wb-agent" x="375" y="107" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d2" href="#wb-agent" x="431" y="107" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d3" href="#wb-agent" x="487" y="107" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d4" href="#wb-agent" x="543" y="107" width="26" height="26"/>
+
+        <use class="film__bee film__bee--good film__d0" href="#wb-agent" x="151" y="151" width="26" height="26"/>
+        <use class="film__bee film__bee--bad  film__d1" href="#wb-agent" x="207" y="151" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d2" href="#wb-agent" x="263" y="151" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d3" href="#wb-agent" x="319" y="151" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d4" href="#wb-agent" x="375" y="151" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d5" href="#wb-agent" x="431" y="151" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d0" href="#wb-agent" x="487" y="151" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d1" href="#wb-agent" x="543" y="151" width="26" height="26"/>
+
+        <use class="film__bee film__bee--good film__d3" href="#wb-agent" x="151" y="195" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d4" href="#wb-agent" x="207" y="195" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d5" href="#wb-agent" x="263" y="195" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d0" href="#wb-agent" x="319" y="195" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d1" href="#wb-agent" x="375" y="195" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d2" href="#wb-agent" x="431" y="195" width="26" height="26"/>
+        <use class="film__bee film__bee--bad  film__d3" href="#wb-agent" x="487" y="195" width="26" height="26"/>
+        <use class="film__bee film__bee--good film__d4" href="#wb-agent" x="543" y="195" width="26" height="26"/>
+
+        <g class="film__legend">
+          <g class="tone-ok">
+            <use href="#wb-agent" x="176" y="242" width="22" height="22"/>
+            <text class="film__legend-text" x="206" y="258">delivers</text>
+          </g>
+          <g class="tone-avoid">
+            <use href="#wb-agent" x="412" y="242" width="22" height="22"/>
+            <text class="film__legend-text" x="442" y="258">takes and disappears</text>
+          </g>
+        </g>
+      </g>
+
+            <g class="film__beat film__beat--scam" data-film-beat>
+        <g class="film__node tone-payer">
+          <rect class="film__box" x="64" y="140" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="77" y="153" width="46" height="46"/>
+          <text class="film__label" x="100" y="234">paying agent</text>
+        </g>
+
+                <g class="film__node film__node--turns">
+          <rect class="film__box" x="584" y="140" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="597" y="153" width="46" height="46"/>
+          <text class="film__label" x="620" y="234">unknown address</text>
+          <text class="film__word film__word--before" x="620" y="126" data-literal>?</text>
+          <text class="film__word film__word--after" x="620" y="126">avoid</text>
+          <g class="film__tag">
+            <rect class="film__tag-box" x="578" y="252" width="84" height="24" rx="12"/>
+            <text class="film__tag-text" x="620" y="268">scam</text>
+          </g>
+        </g>
+
+        <g class="tone-chain">
+          <path class="film__edge" d="M144 158H572"/>
+          <path class="film__tip" d="M564 152l8 6-8 6"/>
+          <text class="film__edge-label" x="358" y="146" data-literal>USDC · Base</text>
+          <g transform="translate(150,158)"><g class="film__pkt film__pkt--pay"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+        </g>
+
+        <g class="tone-dead">
+          <path class="film__edge film__edge--dead" d="M576 194H148"/>
+          <text class="film__edge-label film__edge-label--under" x="358" y="222">nothing came back</text>
+          <g class="film__cross"><path d="M350 186l16 16M366 186l-16 16"/></g>
+        </g>
+      </g>
+
+            <g class="film__beat film__beat--shield" data-film-beat>
+        <g class="film__node tone-payer">
+          <rect class="film__box" x="40" y="140" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="53" y="153" width="46" height="46"/>
+          <text class="film__label" x="76" y="234">paying agent</text>
+        </g>
+
+                <g transform="translate(288,132)">
+          <g class="film__shield tone-us">
+            <use class="film__shield-plate" href="#wb-shield"/>
+            <path class="film__shield-mark" d="M28 44l11 11 21-22"/>
+          </g>
+        </g>
+        <text class="film__label tone-us" x="330" y="252">WalletBureau</text>
+
+        <g class="film__node film__node--pass tone-ok">
+          <rect class="film__box" x="584" y="60" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="597" y="73" width="46" height="46"/>
+          <text class="film__word" x="620" y="46">ok</text>
+          <text class="film__label" x="620" y="154">gets paid</text>
+        </g>
+
+        <g class="film__node film__node--block tone-avoid">
+          <rect class="film__box" x="584" y="220" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="597" y="233" width="46" height="46"/>
+          <text class="film__word" x="620" y="206">avoid</text>
+        </g>
+
+        <g class="tone-chain">
+          <path class="film__edge" d="M112 176h176"/>
+                    <g transform="translate(118,176)"><g class="film__pkt film__pkt--probe"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+          <g transform="translate(118,176)"><g class="film__pkt film__pkt--probe2"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+        </g>
+
+                <g class="tone-ok">
+          <path class="film__edge film__edge--pass" d="M378 158l200-62"/>
+          <text class="film__edge-label" x="474" y="112" data-literal>72</text>
+          <g transform="translate(384,157)"><g class="film__pkt film__pkt--let"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+        </g>
+
+                <g class="tone-avoid">
+          <path class="film__edge film__edge--dead" d="M378 194l200 62"/>
+          <text class="film__edge-label film__edge-label--under" x="474" y="250" data-literal>34</text>
+        </g>
+      </g>
+    </svg>
+
+        <svg class="film__stage film__stage--tall" viewBox="0 0 350 560" role="img" aria-label="Animated diagram: an honest trade, the swarm it happens in, a payment that never comes back, and a score check that stops it." focusable="false" data-film-stage>
+            <g class="film__beat film__beat--trade is-live" data-film-beat>
+        <g class="film__node tone-payer">
+          <rect class="film__box" x="99" y="52" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="112" y="65" width="46" height="46"/>
+          <text class="film__label" x="135" y="146">paying agent</text>
+        </g>
+
+        <g class="film__node film__node--seller tone-ok">
+          <rect class="film__box" x="99" y="396" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="112" y="409" width="46" height="46"/>
+          <text class="film__label" x="135" y="490">seller agent</text>
+          <text class="film__word" x="190" y="388">ok</text>
+        </g>
+
+        <g class="tone-chain">
+          <path class="film__edge" d="M120 170V368"/>
+          <path class="film__tip" d="M114 360l6 8 6-8"/>
+          <text class="film__edge-label film__edge-label--aside" x="190" y="244" data-literal>USDC · Base</text>
+          <g transform="translate(120,170)"><g class="film__pkt film__pkt--pay"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+        </g>
+
+        <g class="tone-ok">
+          <path class="film__edge" d="M150 376V178"/>
+          <path class="film__tip" d="M144 186l6-8 6 8"/>
+          <text class="film__edge-label film__edge-label--aside" x="190" y="312">data, files, an answer</text>
+          <g transform="translate(150,376)"><g class="film__pkt film__pkt--back"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+        </g>
+      </g>
+
+            <g class="film__beat film__beat--swarm" data-film-beat>
+        <use class="film__bee film__bee--good film__d0" href="#wb-agent" x="32" y="40" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d1" href="#wb-agent" x="96" y="40" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d2" href="#wb-agent" x="160" y="40" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d3" href="#wb-agent" x="224" y="40" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d4" href="#wb-agent" x="288" y="40" width="30" height="30"/>
+
+        <use class="film__bee film__bee--good film__d5" href="#wb-agent" x="32" y="96" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d0" href="#wb-agent" x="96" y="96" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d1" href="#wb-agent" x="160" y="96" width="30" height="30"/>
+        <use class="film__bee film__bee--bad  film__d2" href="#wb-agent" x="224" y="96" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d3" href="#wb-agent" x="288" y="96" width="30" height="30"/>
+
+        <use class="film__bee film__bee--good film__d4" href="#wb-agent" x="32" y="152" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d5" href="#wb-agent" x="96" y="152" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d0" href="#wb-agent" x="160" y="152" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d1" href="#wb-agent" x="224" y="152" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d2" href="#wb-agent" x="288" y="152" width="30" height="30"/>
+
+        <use class="film__bee film__bee--bad  film__d3" href="#wb-agent" x="32" y="208" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d4" href="#wb-agent" x="96" y="208" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d5" href="#wb-agent" x="160" y="208" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d0" href="#wb-agent" x="224" y="208" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d1" href="#wb-agent" x="288" y="208" width="30" height="30"/>
+
+        <use class="film__bee film__bee--good film__d2" href="#wb-agent" x="32" y="264" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d3" href="#wb-agent" x="96" y="264" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d4" href="#wb-agent" x="160" y="264" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d5" href="#wb-agent" x="224" y="264" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d0" href="#wb-agent" x="288" y="264" width="30" height="30"/>
+
+        <use class="film__bee film__bee--good film__d1" href="#wb-agent" x="32" y="320" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d2" href="#wb-agent" x="96" y="320" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d3" href="#wb-agent" x="160" y="320" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d4" href="#wb-agent" x="224" y="320" width="30" height="30"/>
+        <use class="film__bee film__bee--bad  film__d5" href="#wb-agent" x="288" y="320" width="30" height="30"/>
+
+        <use class="film__bee film__bee--good film__d0" href="#wb-agent" x="32" y="376" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d1" href="#wb-agent" x="96" y="376" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d2" href="#wb-agent" x="160" y="376" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d3" href="#wb-agent" x="224" y="376" width="30" height="30"/>
+        <use class="film__bee film__bee--good film__d4" href="#wb-agent" x="288" y="376" width="30" height="30"/>
+
+        <g class="film__legend">
+          <g class="tone-ok">
+            <use href="#wb-agent" x="88" y="436" width="24" height="24"/>
+            <text class="film__legend-text" x="122" y="454">delivers</text>
+          </g>
+          <g class="tone-avoid">
+            <use href="#wb-agent" x="88" y="484" width="24" height="24"/>
+            <text class="film__legend-text" x="122" y="502">takes and disappears</text>
+          </g>
+        </g>
+      </g>
+
+            <g class="film__beat film__beat--scam" data-film-beat>
+        <g class="film__node tone-payer">
+          <rect class="film__box" x="99" y="52" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="112" y="65" width="46" height="46"/>
+          <text class="film__label" x="135" y="146">paying agent</text>
+        </g>
+
+        <g class="film__node film__node--turns">
+          <rect class="film__box" x="99" y="396" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="112" y="409" width="46" height="46"/>
+          <text class="film__label" x="135" y="490">unknown address</text>
+          <text class="film__word film__word--before" x="190" y="388" data-literal>?</text>
+          <text class="film__word film__word--after" x="190" y="388">avoid</text>
+          <g class="film__tag">
+            <rect class="film__tag-box" x="93" y="506" width="84" height="24" rx="12"/>
+            <text class="film__tag-text" x="135" y="522">scam</text>
+          </g>
+        </g>
+
+        <g class="tone-chain">
+          <path class="film__edge" d="M120 170V368"/>
+          <path class="film__tip" d="M114 360l6 8 6-8"/>
+          <text class="film__edge-label film__edge-label--aside" x="190" y="244" data-literal>USDC · Base</text>
+          <g transform="translate(120,170)"><g class="film__pkt film__pkt--pay"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+        </g>
+
+        <g class="tone-dead">
+          <path class="film__edge film__edge--dead" d="M150 376V178"/>
+          <text class="film__edge-label film__edge-label--aside" x="190" y="312">nothing came back</text>
+          <g class="film__cross"><path d="M142 265l16 16M158 265l-16 16"/></g>
+        </g>
+      </g>
+
+            <g class="film__beat film__beat--shield" data-film-beat>
+        <g class="film__node tone-payer">
+          <rect class="film__box" x="139" y="30" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="152" y="43" width="46" height="46"/>
+          <text class="film__label" x="175" y="124">paying agent</text>
+        </g>
+
+                <g transform="translate(133,230)">
+          <g class="film__shield tone-us">
+            <use class="film__shield-plate" href="#wb-shield"/>
+            <path class="film__shield-mark" d="M28 44l11 11 21-22"/>
+          </g>
+        </g>
+        <text class="film__label film__label--aside tone-us" x="229" y="280">WalletBureau</text>
+
+        <g class="film__node film__node--pass tone-ok">
+          <rect class="film__box" x="39" y="430" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="52" y="443" width="46" height="46"/>
+          <text class="film__word" x="57" y="416">ok</text>
+          <text class="film__label" x="75" y="524">gets paid</text>
+        </g>
+
+        <g class="film__node film__node--block tone-avoid">
+          <rect class="film__box" x="239" y="430" width="72" height="72" rx="16"/>
+          <use href="#wb-agent" x="252" y="443" width="46" height="46"/>
+          <text class="film__word" x="293" y="416">avoid</text>
+        </g>
+
+        <g class="tone-chain">
+          <path class="film__edge" d="M175 140v82"/>
+          <g transform="translate(175,140)"><g class="film__pkt film__pkt--probe"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+          <g transform="translate(175,140)"><g class="film__pkt film__pkt--probe2"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+        </g>
+
+                <g class="tone-ok">
+          <path class="film__edge film__edge--pass" d="M160 330l-75 94"/>
+          <text class="film__edge-label" x="95" y="384" data-literal>72</text>
+          <g transform="translate(159,331)"><g class="film__pkt film__pkt--let"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+        </g>
+
+                <g class="tone-avoid">
+          <path class="film__edge film__edge--dead" d="M190 330l75 94"/>
+          <text class="film__edge-label" x="255" y="384" data-literal>34</text>
+        </g>
+      </g>
+    </svg>
+
+
+        <div class="film__captions">
+      <p class="film__caption is-live" data-film-caption>x402 as intended: your agent sends USDC on Base, the seller sends back what it sold. No account, no invoice, two seconds.</p>
+      <p class="film__caption" data-film-caption>Most sellers deliver. A few never do — and before the payment they look exactly the same: an address, a price, a promise.</p>
+      <p class="film__caption" data-film-caption>The USDC leaves, nothing comes back. x402 has no chargeback: the address earns its label only after it has your money.</p>
+      <p class="film__caption" data-film-caption>One call, one cent, before the money moves. We score the address on its whole history on Base — your agent pays the sellers that deliver and holds back from the ones that don&#39;t.</p>
+    </div>
+
+        <div class="film__controls" data-film-controls role="group" aria-label="Choose a frame" hidden>
+      <button class="film__dot" type="button" data-film-dot aria-label="Frame 1: an honest trade"><span class="film__dot-mark"></span></button>
+      <button class="film__dot" type="button" data-film-dot aria-label="Frame 2: the swarm it happens in"><span class="film__dot-mark"></span></button>
+      <button class="film__dot" type="button" data-film-dot aria-label="Frame 3: the payment that never came back"><span class="film__dot-mark"></span></button>
+      <button class="film__dot" type="button" data-film-dot aria-label="Frame 4: the check before the payment"><span class="film__dot-mark"></span></button>
+    </div>
+  </div>
+</section>
+
+
+    <section class="section" aria-labelledby="dev-title">
+      <div class="dev-grid">
+        <div class="stack">
+          <h2 id="dev-title" class="u-h2">Built for agents, not dashboards</h2>
+          <p class="dev-copy">One GET, one JSON, stable schema. Pay per call with x402 — no account, no invoice, no minimum. Or use a prepaid API key.</p>
+          <p class="price-line">$0.01 per check · USDC on Base · settlement via x402</p>
+          <p><a href="/docs">Full API reference →</a></p>
+        </div>
+        <div class="stack">
+          <pre class="code"><code><span class="c"># x402: your agent pays $0.01 automatically</span>
+curl https://walletbureau.com/v1/score/0x…
+
+<span class="c"># or with a prepaid key</span>
+curl -H "Authorization: Bearer atk_…" \
+     https://walletbureau.com/v1/score/0x…</code></pre>
+          <h3 class="u-h3">Or give the tool to your agent</h3>
+          <pre class="code"><code><span class="c"># MCP server, one line in Claude Code</span>
+claude mcp add walletbureau -- npx -y @walletbureau/mcp
+
+<span class="c"># any other MCP client</span>
+npm i @walletbureau/mcp --ignore-scripts</code></pre>
+          <p class="optional-line">
+            <span>Works with no configuration at all: without a key or a wallet the server runs on the free demo quota.</span>
+            <a href="https://www.npmjs.com/package/@walletbureau/mcp" rel="noopener">Package on npm →</a>
+            <a href="https://github.com/walletbureau/mcp" rel="noopener">Source on GitHub →</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="disclaimer-title">
+      <div class="disclaimer">
+        <h2 id="disclaimer-title" class="u-h2">Risk signals, not accusations.</h2>
+        <p>A low score means we saw patterns worth checking — not proof of fraud. We explain every flag, and we fix mistakes: if you think a flag is wrong, write to us and a human will review it.</p>
+        <p><a href="/methodology">Read the methodology →</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>WalletBureau — risk signals for x402 agent payments</p>
+    <ul class="footer-links">
+      <li><a href="/methodology">Methodology</a></li>
+      <li><a href="/docs">Docs</a></li>
+      <li><a href="/articles">Articles</a></li>
+      <li><a href="/reports">Reports</a></li>
+      <li><a href="/feed.xml">RSS</a></li>
+      <li><a href="https://github.com/walletbureau" rel="noopener">GitHub</a></li>
+      <li><a href="mailto:support@walletbureau.com">Contact</a></li>
+    </ul>
+    <div class="lang"><span>Language:</span><ul><li><a href="https://walletbureau.com/" aria-current="true">English</a></li></ul></div>
+    <p>Risk signals, not accusations.</p>
+  </footer>
+
+</div>
+<script src="/assets/i18n.en.39078ad4.js"></script>
+<script src="/assets/app.bf5c8d6c.js" defer></script>
+</body>
+</html>

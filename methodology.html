@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Methodology — how WalletBureau scores addresses</title>
+  <meta name="description" content="The eight behavioral signals behind every WalletBureau score, how confident we are in the underlying x402 data, and how to get a wrong flag corrected.">
+  <link rel="canonical" href="https://walletbureau.com/methodology">
+  <link rel="alternate" hreflang="en" href="https://walletbureau.com/methodology">
+  <link rel="alternate" hreflang="x-default" href="https://walletbureau.com/methodology">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WalletBureau">
+  <meta property="og:title" content="Methodology — how WalletBureau scores addresses">
+  <meta property="og:description" content="The eight behavioral signals behind every WalletBureau score, how confident we are in the underlying x402 data, and how to get a wrong flag corrected.">
+  <meta property="og:url" content="https://walletbureau.com/methodology">
+  <meta property="og:locale" content="en">
+  <meta property="og:image" content="https://walletbureau.com/assets/og.6d1ebcde.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="WalletBureau — risk signals for x402 agent payments, with the three verdicts: ok, caution, avoid">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.9ba3d42b.png">
+  <link rel="stylesheet" href="/assets/styles.d8f90657.css">
+  
+  
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Methodology — how WalletBureau scores addresses","description":"The eight behavioral signals behind every WalletBureau score, how confident we are in the underlying x402 data, and how to get a wrong flag corrected.","mainEntityOfPage":"https://walletbureau.com/methodology","publisher":{"@type":"Organization","name":"WalletBureau","url":"https://walletbureau.com/","description":"Check who your agent is about to pay. A 0-100 score, a verdict and explained risk flags for any Base address, from its full x402 payment history. $0.01 per check, no signup."}}]}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="bg" aria-hidden="true"></div>
+<div class="wrap">
+  <header class="site-header">
+    <a class="brand" href="/"><img class="brand__mark" src="/assets/logo-mark.a612749c.png" width="82" height="96" alt="" aria-hidden="true"><span class="brand__name">Wallet<span class="brand__name--accent">Bureau</span></span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="/methodology" aria-current="page">Methodology</a>
+      <a href="/docs">Docs</a>
+      <a href="/articles">Articles</a>
+      <a href="/docs#endpoints">API</a>
+    </nav>
+  </header>
+
+  <div class="notice notice--info paused-banner" role="status"><p><strong>The API is paused.</strong> Since October 2026 the scoring API and the MCP server are offline. The methodology and articles stay here. <a href="mailto:support@walletbureau.com">Write to us to hear when it is back.</a></p></div>
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol><li><a href="/">Home</a></li><li>Methodology</li></ol>
+  </nav>
+
+  <main id="main" class="doc-layout">
+    <nav class="toc" aria-labelledby="toc-title">
+      <p class="toc__title" id="toc-title">On this page</p>
+      <ol>
+        <li><a href="#signals">The eight signals</a></li>
+        <li><a href="#confidence">How sure we are about the data</a></li>
+        <li><a href="#labels">Labels and corrections</a></li>
+        <li><a href="#changelog">Changelog</a></li>
+      </ol>
+    </nav>
+
+    <div>
+      <div class="page-head u-flush-top">
+        <h1>How we score addresses</h1>
+      </div>
+
+      <div class="prose u-mt-5">
+        <p>We read every x402 / EIP-3009 USDC transfer on Base and describe an address by its own behavior. No opinions, no manual whitelists beyond labeled incidents, no black box: every flag comes with the reason it fired. We publish the principles, not the thresholds — the exact numbers stay private so they cannot be gamed.</p>
+
+        <h2 id="signals">The eight signals</h2>
+        <ol>
+          <li><strong>New address</strong> — recently seen for the first time. A short history gives us little to judge by, and fresh addresses are cheap to create.</li>
+          <li><strong>Thin history</strong> — very few incoming payments and little volume: not enough evidence in either direction.</li>
+          <li><strong>Concentration</strong> — most deals are with a single counterparty, a pattern consistent with self-dealing or manufactured activity.</li>
+          <li><strong>One-off pattern</strong> — almost every counterparty paid exactly once and never came back: consistent with "take the money and disappear".</li>
+          <li><strong>Linked to flagged</strong> — direct or one-hop transfers with an address we labeled as a scam. Dust-sized transfers are ignored, so nobody can taint an address by sending it a cent.</li>
+          <li><strong>Sybil suspect</strong> — first funded by the same source as a group of sibling addresses created around the same time. Known limit: we cannot see gas funding, so we use the first USDC funding as a proxy.</li>
+          <li><strong>Activity spike</strong> — recent activity far above the address's own baseline.</li>
+          <li><strong>Labeled</strong> — a human reviewer has labeled the address (scam confirmed, scam suspected, or trusted). Labels override heuristics.</li>
+        </ol>
+        <p>An address with no history at all is not an error: we return a neutral, low-confidence answer and say so.</p>
+
+        <h2 id="confidence">How sure we are about the data</h2>
+        <p>The x402 protocol has no canonical on-chain marker. We classify a transfer as confirmed when it settles through a facilitator we track, and probable when it matches the payment pattern without one. Every answer states which basis it used. We would rather show you the uncertainty than hide it.</p>
+
+        <h2 id="labels">Labels and corrections</h2>
+        <p>Labels are added by hand from incident reports and public sources. If you believe a flag on your address is wrong, write to us: a human reviews it, and if we were wrong we fix the label and the score changes on the next run.</p>
+
+        <h2 id="changelog">Changelog</h2>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th scope="col">Version</th><th scope="col">Date</th><th scope="col">Change</th></tr></thead>
+            <tbody>
+              <tr><td><code>v1.0</code></td><td class="num">2026-08-10</td><td>First published. Eight v0 signals, no machine learning; thresholds calibrated on the full Base backfill.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="notice notice--info u-mt-6">
+          <p><strong>Risk signals, not accusations.</strong> A low score means we saw patterns worth checking — not proof of fraud. We explain every flag, and we fix mistakes: if you think a flag is wrong, write to us and a human will review it.</p>
+          <p><a href="/#demo">Check an address</a></p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>WalletBureau — risk signals for x402 agent payments</p>
+    <ul class="footer-links">
+      <li><a href="/methodology">Methodology</a></li>
+      <li><a href="/docs">Docs</a></li>
+      <li><a href="/articles">Articles</a></li>
+      <li><a href="/reports">Reports</a></li>
+      <li><a href="/feed.xml">RSS</a></li>
+      <li><a href="https://github.com/walletbureau" rel="noopener">GitHub</a></li>
+      <li><a href="mailto:support@walletbureau.com">Contact</a></li>
+    </ul>
+    <div class="lang"><span>Language:</span><ul><li><a href="https://walletbureau.com/methodology" aria-current="true">English</a></li></ul></div>
+    <p>Risk signals, not accusations.</p>
+  </footer>
+
+</div>
+<script src="/assets/i18n.en.39078ad4.js"></script>
+<script src="/assets/app.bf5c8d6c.js" defer></script>
+</body>
+</html>

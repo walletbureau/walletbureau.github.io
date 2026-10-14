@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to check an x402 counterparty before paying</title>
+  <meta name="description" content="Five checks to run on a Base address before your agent pays it. One takes a minute in a block explorer; four need the transfer graph. What each one tells you.">
+  <link rel="canonical" href="https://walletbureau.com/articles/check-x402-counterparty-before-paying">
+  <link rel="alternate" hreflang="en" href="https://walletbureau.com/articles/check-x402-counterparty-before-paying">
+  <link rel="alternate" hreflang="x-default" href="https://walletbureau.com/articles/check-x402-counterparty-before-paying">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="WalletBureau">
+  <meta property="og:title" content="How to check an x402 counterparty before paying">
+  <meta property="og:description" content="Five checks to run on a Base address before your agent pays it. One takes a minute in a block explorer; four need the transfer graph. What each one tells you.">
+  <meta property="og:url" content="https://walletbureau.com/articles/check-x402-counterparty-before-paying">
+  <meta property="og:locale" content="en">
+  <meta property="og:image" content="https://walletbureau.com/assets/og.6d1ebcde.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="WalletBureau — risk signals for x402 agent payments, with the three verdicts: ok, caution, avoid">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.9ba3d42b.png">
+  <link rel="stylesheet" href="/assets/styles.d8f90657.css">
+  
+  
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"How to check an x402 counterparty before paying","description":"Five checks to run on a Base address before your agent pays it. One takes a minute in a block explorer; four need the transfer graph. What each one tells you.","datePublished":"2026-08-20T00:00:00+00:00","dateModified":"2026-08-20T00:00:00+00:00","inLanguage":"en","author":{"@type":"Organization","name":"WalletBureau","url":"https://walletbureau.com/","description":"Check who your agent is about to pay. A 0-100 score, a verdict and explained risk flags for any Base address, from its full x402 payment history. $0.01 per check, no signup."},"publisher":{"@type":"Organization","name":"WalletBureau","url":"https://walletbureau.com/","description":"Check who your agent is about to pay. A 0-100 score, a verdict and explained risk flags for any Base address, from its full x402 payment history. $0.01 per check, no signup."},"mainEntityOfPage":"https://walletbureau.com/articles/check-x402-counterparty-before-paying","image":"https://walletbureau.com/assets/og.6d1ebcde.png","keywords":"x402, counterparty risk, Base"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://walletbureau.com/"},{"@type":"ListItem","position":2,"name":"Articles","item":"https://walletbureau.com/articles"},{"@type":"ListItem","position":3,"name":"How to check an x402 counterparty before paying","item":"https://walletbureau.com/articles/check-x402-counterparty-before-paying"}]}]}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="bg" aria-hidden="true"></div>
+<div class="wrap">
+  <header class="site-header">
+    <a class="brand" href="/"><img class="brand__mark" src="/assets/logo-mark.a612749c.png" width="82" height="96" alt="" aria-hidden="true"><span class="brand__name">Wallet<span class="brand__name--accent">Bureau</span></span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="/methodology">Methodology</a>
+      <a href="/docs">Docs</a>
+      <a href="/articles" aria-current="page">Articles</a>
+      <a href="/docs#endpoints">API</a>
+    </nav>
+  </header>
+
+  <div class="notice notice--info paused-banner" role="status"><p><strong>The API is paused.</strong> Since October 2026 the scoring API and the MCP server are offline. The methodology and articles stay here. <a href="mailto:support@walletbureau.com">Write to us to hear when it is back.</a></p></div>
+    <nav class="breadcrumbs read-col" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/">Home</a></li>
+      <li><a href="/articles">Articles</a></li>
+      <li>How to check an x402 counterparty before paying</li>
+    </ol>
+  </nav>
+
+  <main id="main" class="article">
+    <article>
+      <div class="page-head read-col u-flush-top">
+        <h1>How to check an x402 counterparty before paying</h1>
+        <p class="page-meta">
+          <span>Published <time datetime="2026-08-20">August 20, 2026</time></span>
+          
+          <span>x402 · counterparty risk · Base</span>
+        </p>
+                
+      </div>
+
+            
+
+      <div class="prose prose--article u-mt-5"><p>Your agent reads a <code>402 Payment Required</code>, signs, and pays. The whole thing
+takes less time than a blink, and it happens thousands of times a day to
+endpoints the agent discovered minutes ago. The payment is an EIP-3009 USDC
+transfer on Base: no chargeback, no escrow, no dispute button. Once the money
+has moved, the only thing you can do about a bad counterparty is not pay it
+again.</p>
+<p>So the check has to happen before, and it has to be cheap enough to run every
+time. Here are the five checks we would run, in order of how much each one
+tells you. Everything below comes from operating an index of every x402 /
+EIP-3009 USDC transfer on Base, 1.4 million addresses and counting.</p>
+<h2 id="getting-one-payment-wrong-costs-nothing-which-is-the-whole-problem">Getting one payment wrong costs nothing, which is the whole problem</h2>
+<p>In a recent week (August 2026) the median transfer we observed was about
+<strong>$0.006</strong>. A single bad payment costs less than a rounding error, so nobody
+disputes one and nobody notices one. That is exactly the trap. Agents don&#39;t
+make one payment; they make thousands, unattended. A counterparty that quietly
+takes the money and returns junk, or nothing, never shows up in an error log.
+It shows up in your books, weeks later, as a line you can&#39;t explain.</p>
+<h2 id="the-checklist">The checklist</h2>
+<div class="figure-block"><figure class="fig fig--wide">
+  <div class="fig__scroll">
+    <svg class="fig__stage fig__stage--wide" viewBox="0 0 720 330" role="img" aria-label="Diagram: the five checks before a payment, in order of how much each tells you — one you can do in a block explorer, four that need the transfer graph." focusable="false">
+        <g class="tone-payer">
+      <text class="film__note film__note--mid" x="80" y="56">1</text>
+      <rect class="film__box" x="14" y="76" width="132" height="96" rx="14"/>
+      <text class="film__label" x="80" y="122">how old</text>
+      <text class="film__label" x="80" y="146">is it</text>
+      <rect class="film__tag-box film__tag-box--calm" x="28" y="190" width="104" height="28" rx="14"/>
+      <text class="film__tag-text" x="80" y="209">by hand</text>
+    </g>
+
+        <g class="tone-payer">
+      <text class="film__note film__note--mid" x="220" y="56">2</text>
+      <rect class="film__box" x="154" y="76" width="132" height="96" rx="14"/>
+      <text class="film__label" x="220" y="122">does anyone</text>
+      <text class="film__label" x="220" y="146">come back</text>
+    </g>
+    <g class="tone-us">
+      <rect class="film__tag-box film__tag-box--calm" x="168" y="190" width="104" height="28" rx="14"/>
+      <text class="film__tag-text" x="220" y="209">the graph</text>
+    </g>
+
+        <g class="tone-payer">
+      <text class="film__note film__note--mid" x="360" y="56">3</text>
+      <rect class="film__box" x="294" y="76" width="132" height="96" rx="14"/>
+      <text class="film__label" x="360" y="122">where its</text>
+      <text class="film__label" x="360" y="146">money began</text>
+      <rect class="film__tag-box film__tag-box--calm" x="308" y="190" width="104" height="28" rx="14"/>
+      <text class="film__tag-text" x="360" y="209">by hand</text>
+    </g>
+
+        <g class="tone-payer">
+      <text class="film__note film__note--mid" x="500" y="56">4</text>
+      <rect class="film__box" x="434" y="76" width="132" height="96" rx="14"/>
+      <text class="film__label" x="500" y="122">what it sits</text>
+      <text class="film__label" x="500" y="146">next to</text>
+    </g>
+    <g class="tone-us">
+      <rect class="film__tag-box film__tag-box--calm" x="448" y="190" width="104" height="28" rx="14"/>
+      <text class="film__tag-text" x="500" y="209">the graph</text>
+    </g>
+
+        <g class="tone-payer">
+      <text class="film__note film__note--mid" x="640" y="56">5</text>
+      <rect class="film__box" x="574" y="76" width="132" height="96" rx="14"/>
+      <text class="film__label" x="640" y="122">how activity</text>
+      <text class="film__label" x="640" y="146">grew</text>
+    </g>
+    <g class="tone-us">
+      <rect class="film__tag-box film__tag-box--calm" x="588" y="190" width="104" height="28" rx="14"/>
+      <text class="film__tag-text" x="640" y="209">the graph</text>
+    </g>
+
+        <g class="tone-payer">
+      <path class="film__edge" d="M14 270H700"/>
+      <path class="film__tip" d="M692 264l8 6-8 6"/>
+      <text class="film__note film__note--mid" x="357" y="306">each check tells you more than the one before</text>
+    </g>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">Only the first check is a minute in a block explorer. Number three starts there too — one address at a time — but seeing that the same source funded a thousand siblings needs the whole transfer graph, and so do the last two.</figcaption>
+</figure>
+</div>
+<h3 id="1-the-address-is-older-than-a-few-days">1. The address is older than a few days</h3>
+<p>The cheapest signal there is. Look the address up on any Base block explorer
+and find its first transaction. Payment addresses of real services live for
+months and accumulate history. Scam addresses are created in batches, used
+briefly and abandoned, because burning an address costs nothing. Across our
+whole index, three out of four addresses are gone within a day of their first
+transfer; we wrote up <a href="/articles/x402-disposable-addresses">what that population looks like</a>.</p>
+<p>Age alone proves nothing. Every honest service was new once. But an address
+that appeared days ago and is asking for money has earned the rest of this
+list.</p>
+<h3 id="2-somebody-has-paid-it-twice">2. Somebody has paid it twice</h3>
+<p>This is the single most telling behavioral question, and an explorer will not
+answer it for you: you need the address&#39;s full payment history grouped by
+counterparty. Real services have returning customers; an agent that bought a
+useful API call buys it again. A take-the-money-and-disappear operation has
+almost none: every payer pays exactly once, finds nothing there, and leaves.</p>
+<p>For scale: among established recipients active in one recent week, the
+<em>median</em> share of one-off counterparties was about 45%. Plenty of honest
+services have plenty of one-time buyers. The pattern that should stop your
+agent is an address where nearly <em>everyone</em> paid once and never came back.</p>
+<h3 id="3-its-first-money-did-not-arrive-with-a-thousand-siblings">3. Its first money did not arrive with a thousand siblings</h3>
+<p>Fresh scam addresses are rarely funded one at a time. They are seeded in
+batches from a single source; that is what address-farm tooling produces. In
+one week of August 2026 we watched <strong>6,708 newly funded addresses arrive in
+119 groups</strong>, each group sharing a single first funding source. The largest
+group held 1,375 addresses. We have yet to meet an honest business model that
+needs a thousand sibling payment addresses created in a week.</p>
+<p>You can check one address&#39;s funding source by hand on an explorer. You cannot
+see, by hand, that the same source funded a thousand siblings.</p>
+<p>That takes the graph.</p>
+<h3 id="4-it-does-not-sit-next-to-a-known-incident">4. It does not sit next to a known incident</h3>
+<p>Money moves between related addresses. An address one hop away from a wallet
+already identified in a scam incident is not automatically guilty, but it is
+worth a pause, the way a phone number one digit off from a known fraud line
+is. This check is genuinely hard to do yourself: it needs a maintained list of
+flagged addresses and a transfer graph to walk. One caveat any serious
+implementation has to get right: a dust transfer sent <em>to</em> an address by a
+stranger must never count against it, or anyone could taint anyone for a cent.</p>
+<h3 id="5-its-activity-grew-like-usage-not-like-a-campaign">5. Its activity grew like usage, not like a campaign</h3>
+<p>Real usage grows and breathes. Manufactured activity arrives in spikes, a
+burst of transfers far above anything in the address&#39;s own past, often right
+before the address starts advertising itself. One explorer screenshot won&#39;t
+show you this. A baseline over time will.</p>
+<h2 id="by-hand-you-get-two-checks-out-of-five">By hand, you get two checks out of five</h2>
+<p>Checks 1 and (partly) 3 are explorer work: a minute per address, fine for a
+one-off. Checks 2, 4 and 5 are graph work over the full transfer history.
+That is not realistic by hand, and it is not realistic at all for an agent
+that decides in milliseconds.</p>
+<div class="figure-block"><figure class="fig fig--wide">
+  <div class="fig__scroll">
+    <svg class="fig__stage fig__stage--wide" viewBox="0 0 720 300" role="img" aria-label="Diagram comparing two ways to run the same checks: by hand, two of five checks and minutes per address; in one call, all five for a cent." focusable="false">
+        <g class="tone-payer">
+      <rect class="film__box" x="20" y="26" width="680" height="120" rx="18"/>
+      <text class="film__label film__label--aside" x="56" y="94">by hand</text>
+      <text class="film__stat" x="380" y="88">2 / 5</text>
+      <text class="film__stat-note" x="380" y="116">checks you can do</text>
+      <text class="film__stat" x="580" y="88">minutes</text>
+      <text class="film__stat-note" x="580" y="116">per address</text>
+    </g>
+
+        <g class="tone-us">
+      <rect class="film__box" x="20" y="166" width="680" height="120" rx="18"/>
+      <text class="film__label film__label--aside" x="56" y="234">one call</text>
+      <text class="film__stat" x="380" y="228">5 / 5</text>
+      <text class="film__stat-note" x="380" y="256">checks, every time</text>
+            <text class="film__stat" x="580" y="228">$0.01</text>
+      <text class="film__stat-note" x="580" y="256">per address, over x402</text>
+    </g>
+    </svg>
+  </div>
+  <figcaption class="fig__caption">The difference is not effort, it is reach: the graph checks are not slow by hand, they are impossible by hand — and an agent pays in milliseconds, not minutes.</figcaption>
+</figure>
+</div>
+<p>This is the gap <a href="/">WalletBureau</a> exists to close. We run the checks above,
+plus a few more described in the <a href="/methodology">methodology</a>, against our
+index of the complete x402 / EIP-3009 history on Base, and compress the answer
+into a 0–100 score, a verdict (<code>ok</code> / <code>caution</code> / <code>avoid</code>), and the list of
+flags that fired, each with its reason in plain text:</p>
+<pre class="code"><code>curl https://walletbureau.com/v1/demo/score/0x8f3a…b1c2
+</code></pre>
+<p>The demo endpoint is free: a few checks per day, no signup. The
+<a href="/docs">paid endpoint</a> returns the same JSON for $0.01 per call, paid over
+x402 itself, so your agent can vet an address in the same protocol it uses to
+buy everything else. If your agent speaks MCP, the
+<a href="/docs#mcp">same check ships as an MCP server</a> and works with no
+configuration.</p>
+<h2 id="what-a-score-will-not-tell-you">What a score will not tell you</h2>
+<p>A behavioral score reads payment history, so it cannot see what has no
+history. A brand-new address gets a neutral, low-confidence answer, not a
+verdict; we say so explicitly rather than guess. It cannot tell you whether
+the <em>service</em> behind an honest-looking address is any good. And it is a set of
+risk signals, not an accusation: a low score means the patterns above are
+present and worth your attention, not that the owner is a criminal. Every flag
+we return comes with its reason precisely so you, or your agent, can decide
+what to do with it.</p>
+<p><em>The numbers above come from the WalletBureau index of x402 /
+EIP-3009 USDC transfers on Base; the queries were run on 2026-08-20. How we
+classify transfers and what each signal means is in the
+<a href="/methodology">methodology</a>.</em></p>
+</div>
+    </article>
+
+    <div class="notice notice--info read-col u-mt-6">
+      <p><strong>Risk signals, not accusations.</strong> A low score means we saw patterns worth checking — not proof of fraud. We explain every flag, and we fix mistakes: if you think a flag is wrong, write to us and a human will review it.</p>
+      <p><a href="/methodology">Read the methodology →</a></p>
+      <p class="u-mt-2"><a class="btn btn--primary" href="/#demo">Check an address</a></p>
+    </div>
+
+    <p class="read-col u-mt-5"><a href="/articles">← All articles</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <p>WalletBureau — risk signals for x402 agent payments</p>
+    <ul class="footer-links">
+      <li><a href="/methodology">Methodology</a></li>
+      <li><a href="/docs">Docs</a></li>
+      <li><a href="/articles">Articles</a></li>
+      <li><a href="/reports">Reports</a></li>
+      <li><a href="/feed.xml">RSS</a></li>
+      <li><a href="https://github.com/walletbureau" rel="noopener">GitHub</a></li>
+      <li><a href="mailto:support@walletbureau.com">Contact</a></li>
+    </ul>
+    <div class="lang"><span>Language:</span><ul><li><a href="https://walletbureau.com/articles/check-x402-counterparty-before-paying" aria-current="true">English</a></li></ul></div>
+    <p>Risk signals, not accusations.</p>
+  </footer>
+
+</div>
+<script src="/assets/i18n.en.39078ad4.js"></script>
+<script src="/assets/app.bf5c8d6c.js" defer></script>
+</body>
+</html>

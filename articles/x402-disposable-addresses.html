@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The x402 economy runs on disposable addresses</title>
+  <meta name="description" content="We indexed 1.4 million addresses paid through x402 on Base. The one in the middle lived for a single transaction. What that means when an agent pays strangers.">
+  <link rel="canonical" href="https://walletbureau.com/articles/x402-disposable-addresses">
+  <link rel="alternate" hreflang="en" href="https://walletbureau.com/articles/x402-disposable-addresses">
+  <link rel="alternate" hreflang="x-default" href="https://walletbureau.com/articles/x402-disposable-addresses">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="WalletBureau">
+  <meta property="og:title" content="The x402 economy runs on disposable addresses">
+  <meta property="og:description" content="We indexed 1.4 million addresses paid through x402 on Base. The one in the middle lived for a single transaction. What that means when an agent pays strangers.">
+  <meta property="og:url" content="https://walletbureau.com/articles/x402-disposable-addresses">
+  <meta property="og:locale" content="en">
+  <meta property="og:image" content="https://walletbureau.com/assets/og.6d1ebcde.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="WalletBureau — risk signals for x402 agent payments, with the three verdicts: ok, caution, avoid">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.9ba3d42b.png">
+  <link rel="stylesheet" href="/assets/styles.d8f90657.css">
+  
+  
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"The x402 economy runs on disposable addresses","description":"We indexed 1.4 million addresses paid through x402 on Base. The one in the middle lived for a single transaction. What that means when an agent pays strangers.","datePublished":"2026-08-20T00:00:00+00:00","dateModified":"2026-08-20T00:00:00+00:00","inLanguage":"en","author":{"@type":"Organization","name":"WalletBureau","url":"https://walletbureau.com/","description":"Check who your agent is about to pay. A 0-100 score, a verdict and explained risk flags for any Base address, from its full x402 payment history. $0.01 per check, no signup."},"publisher":{"@type":"Organization","name":"WalletBureau","url":"https://walletbureau.com/","description":"Check who your agent is about to pay. A 0-100 score, a verdict and explained risk flags for any Base address, from its full x402 payment history. $0.01 per check, no signup."},"mainEntityOfPage":"https://walletbureau.com/articles/x402-disposable-addresses","image":"https://walletbureau.com/assets/og.6d1ebcde.png","keywords":"x402, fraud patterns, Base, research"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://walletbureau.com/"},{"@type":"ListItem","position":2,"name":"Articles","item":"https://walletbureau.com/articles"},{"@type":"ListItem","position":3,"name":"The x402 economy runs on disposable addresses","item":"https://walletbureau.com/articles/x402-disposable-addresses"}]}]}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="bg" aria-hidden="true"></div>
+<div class="wrap">
+  <header class="site-header">
+    <a class="brand" href="/"><img class="brand__mark" src="/assets/logo-mark.a612749c.png" width="82" height="96" alt="" aria-hidden="true"><span class="brand__name">Wallet<span class="brand__name--accent">Bureau</span></span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="/methodology">Methodology</a>
+      <a href="/docs">Docs</a>
+      <a href="/articles" aria-current="page">Articles</a>
+      <a href="/docs#endpoints">API</a>
+    </nav>
+  </header>
+
+  <div class="notice notice--info paused-banner" role="status"><p><strong>The API is paused.</strong> Since October 2026 the scoring API and the MCP server are offline. The methodology and articles stay here. <a href="mailto:support@walletbureau.com">Write to us to hear when it is back.</a></p></div>
+    <nav class="breadcrumbs read-col" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/">Home</a></li>
+      <li><a href="/articles">Articles</a></li>
+      <li>The x402 economy runs on disposable addresses</li>
+    </ol>
+  </nav>
+
+  <main id="main" class="article">
+    <article>
+      <div class="page-head read-col u-flush-top">
+        <h1>The x402 economy runs on disposable addresses</h1>
+        <p class="page-meta">
+          <span>Published <time datetime="2026-08-20">August 20, 2026</time></span>
+          
+          <span>x402 · fraud patterns · Base · research</span>
+        </p>
+                
+      </div>
+
+            
+
+      <div class="prose prose--article u-mt-5"><p>Take every address that has ever received an x402 payment on Base, all 1.4
+million of them, and sort them by how long they lived. The one in the middle
+lived for exactly one transaction. Not one day. One transaction: it received
+money once and was never seen again.</p>
+<p>We expected to find merchants. We run an index of every x402 / EIP-3009 USDC
+transfer on Base (1,419,172 addresses and 166 million transfers at the time of
+writing), and when we first pulled the lifespan numbers we assumed the typical
+recipient would look like a service: an address printed into docs, embedded in
+configs, paid again and again. That population exists. It is not what the
+protocol is made of.</p>
+<h2 id="the-median-address-exists-for-one-transaction">The median address exists for one transaction</h2>
+<p>Measure the lifespan of an address as the time between its first and last
+observed transfer. Across the whole index:</p>
+<div class="table-scroll"><table class="table">
+<thead>
+<tr>
+<th>Population slice</th>
+<th>Addresses</th>
+<th>Share</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>All addresses in the index</td>
+<td>1,419,172</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Active for less than 24 hours, total</td>
+<td>1,077,668</td>
+<td>75.9%</td>
+</tr>
+<tr>
+<td>Received exactly one payment, ever</td>
+<td>401,666</td>
+<td>28.3%</td>
+</tr>
+</tbody></table>
+</div>
+<p>The median lifespan is zero. More than half of all addresses appear in exactly
+one transaction and are never seen again.</p>
+<p>Three out of four are gone within a day.</p>
+<div class="figure-block"><div class="film" data-film>
+  <p class="film__title">The median x402 address lives for one payment</p>
+
+    <svg class="film__defs" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="wb-life-agent" viewBox="0 0 40 40">
+        <circle class="film__glyph-dot" cx="20" cy="4.5" r="2.2"/>
+        <path class="film__glyph" d="M20 6.7V11"/>
+        <rect class="film__glyph" x="8" y="11" width="24" height="19" rx="6.5"/>
+        <circle class="film__glyph-dot" cx="15" cy="20.5" r="2"/>
+        <circle class="film__glyph-dot" cx="25" cy="20.5" r="2"/>
+        <path class="film__glyph" d="M14.5 30v4M25.5 30v4"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <svg class="film__stage film__stage--tall" viewBox="0 0 350 560" role="img" aria-label="Animated diagram in four frames: an address a business keeps, an address paid exactly once, the whole population of 1.4 million addresses, and the only moment a payer can act." focusable="false" data-film-stage>
+
+        <g class="film__beat film__beat--merchant is-live" data-film-beat>
+      <g class="tone-chain">
+        <path class="film__edge" d="M45 110L135 368"/>
+        <path class="film__edge" d="M135 110V368"/>
+        <path class="film__edge" d="M225 110L135 368"/>
+        <path class="film__tip" d="M129 360l6 8 6-8"/>
+        <g transform="translate(45,110)"><g class="film__pkt film__pkt--p1"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+        <g transform="translate(135,110)"><g class="film__pkt film__pkt--p2"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+        <g transform="translate(225,110)"><g class="film__pkt film__pkt--p3"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+      </g>
+
+      <g class="film__node tone-payer">
+        <text class="film__label" x="135" y="36">returning payers</text>
+        <rect class="film__box" x="21" y="52" width="48" height="48" rx="12"/>
+        <use href="#wb-life-agent" x="29" y="60" width="32" height="32"/>
+      </g>
+      <g class="film__node film__d1 tone-payer">
+        <rect class="film__box" x="111" y="52" width="48" height="48" rx="12"/>
+        <use href="#wb-life-agent" x="119" y="60" width="32" height="32"/>
+      </g>
+      <g class="film__node film__d2 tone-payer">
+        <rect class="film__box" x="201" y="52" width="48" height="48" rx="12"/>
+        <use href="#wb-life-agent" x="209" y="60" width="32" height="32"/>
+      </g>
+
+            <g class="film__node film__node--keeps film__d1 tone-ok">
+        <rect class="film__box" x="99" y="396" width="72" height="72" rx="16"/>
+        <use href="#wb-life-agent" x="112" y="409" width="46" height="46"/>
+        <text class="film__label" x="135" y="490">service address</text>
+        <g class="film__tag">
+          <rect class="film__tag-box film__tag-box--calm" x="87" y="506" width="96" height="24" rx="12"/>
+          <text class="film__tag-text" x="135" y="522">long-lived</text>
+        </g>
+      </g>
+    </g>
+
+        <g class="film__beat film__beat--once" data-film-beat>
+      <g class="film__node tone-payer">
+        <rect class="film__box" x="99" y="52" width="72" height="72" rx="16"/>
+        <use href="#wb-life-agent" x="112" y="65" width="46" height="46"/>
+        <text class="film__label" x="135" y="146">paying agent</text>
+      </g>
+
+      <g class="tone-chain">
+        <path class="film__edge" d="M120 170V368"/>
+        <path class="film__tip" d="M114 360l6 8 6-8"/>
+        <text class="film__edge-label film__edge-label--aside" x="190" y="244">one payment</text>
+        <g transform="translate(120,170)"><g class="film__pkt film__pkt--pay"><circle class="film__pkt-halo" r="12"/><circle class="film__pkt-core" r="4.5"/></g></g>
+      </g>
+
+            <g class="film__node film__node--fades">
+        <rect class="film__box" x="99" y="396" width="72" height="72" rx="16"/>
+        <use href="#wb-life-agent" x="112" y="409" width="46" height="46"/>
+        <text class="film__label" x="135" y="490">new address</text>
+        <text class="film__word film__word--before" x="190" y="388" data-literal>?</text>
+        <text class="film__word film__word--after" x="190" y="388">gone</text>
+        <g class="film__tag">
+          <rect class="film__tag-box film__tag-box--calm" x="87" y="506" width="96" height="24" rx="12"/>
+          <text class="film__tag-text" x="135" y="522">single use</text>
+        </g>
+      </g>
+    </g>
+
+        <g class="film__beat film__beat--scale" data-film-beat>
+            <g class="tone-ok">
+        <rect class="film__box film__cell" x="93" y="56" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__d2" x="217" y="118" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__d1" x="31" y="180" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__d3" x="279" y="180" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__d2" x="155" y="242" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__d4" x="217" y="304" width="40" height="40" rx="10"/>
+      </g>
+
+      <g class="tone-dead">
+        <rect class="film__box film__cell film__cell--dead film__d1" x="31" y="56" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d2" x="155" y="56" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d3" x="217" y="56" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d4" x="279" y="56" width="40" height="40" rx="10"/>
+
+        <rect class="film__box film__cell film__cell--dead film__d2" x="31" y="118" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d3" x="93" y="118" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d4" x="155" y="118" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d5" x="279" y="118" width="40" height="40" rx="10"/>
+
+        <rect class="film__box film__cell film__cell--dead film__d3" x="93" y="180" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d4" x="155" y="180" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d5" x="217" y="180" width="40" height="40" rx="10"/>
+
+        <rect class="film__box film__cell film__cell--dead film__d4" x="31" y="242" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d5" x="93" y="242" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d6" x="217" y="242" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d5" x="279" y="242" width="40" height="40" rx="10"/>
+
+        <rect class="film__box film__cell film__cell--dead film__d5" x="31" y="304" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d6" x="93" y="304" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d6" x="155" y="304" width="40" height="40" rx="10"/>
+        <rect class="film__box film__cell film__cell--dead film__d6" x="279" y="304" width="40" height="40" rx="10"/>
+      </g>
+
+      <g class="tone-dead">
+        <text class="film__stat" x="175" y="412">75.9%</text>
+        <text class="film__stat-note" x="175" y="436">gone within a day</text>
+      </g>
+
+      <g class="film__legend">
+        <g class="tone-ok">
+          <rect class="film__box" x="58" y="478" width="22" height="22" rx="6"/>
+          <text class="film__legend-text" x="88" y="495">still active</text>
+        </g>
+        <g class="tone-dead">
+          <rect class="film__box film__cell--dead" x="200" y="478" width="22" height="22" rx="6"/>
+          <text class="film__legend-text" x="230" y="495">gone</text>
+        </g>
+      </g>
+    </g>
+
+        <g class="film__beat film__beat--window" data-film-beat>
+      <g class="tone-payer">
+        <path class="film__edge" d="M100 84V300"/>
+      </g>
+            <g class="tone-dead">
+        <path class="film__edge film__edge--dead" d="M100 300V500"/>
+      </g>
+
+      <g class="film__step tone-payer">
+        <circle class="film__mark" cx="100" cy="120" r="9"/>
+        <text class="film__label film__label--aside" x="126" y="114">address created</text>
+        <text class="film__note" x="126" y="136">hours old, typically</text>
+      </g>
+
+      <g class="film__step film__d3 tone-us">
+        <circle class="film__ring" cx="100" cy="300" r="17"/>
+        <circle class="film__mark" cx="100" cy="300" r="9"/>
+        <text class="film__label film__label--aside" x="126" y="294">your agent pays</text>
+        <text class="film__note" x="126" y="316">the only moment to check</text>
+      </g>
+
+      <g class="film__step film__d6 tone-dead">
+        <circle class="film__mark film__cell--dead" cx="100" cy="468" r="9"/>
+        <text class="film__label film__label--aside" x="126" y="462">dispute window</text>
+        <text class="film__note" x="126" y="484">none</text>
+      </g>
+    </g>
+  </svg>
+
+  <div class="film__captions">
+    <p class="film__caption is-live" data-film-caption>A real service address is long-lived by nature: printed into docs, embedded in configs, cached by clients — and paid again and again.</p>
+    <p class="film__caption" data-film-caption>The median address does this instead: one payment, then silence. 401,666 addresses received exactly one payment, ever.</p>
+    <p class="film__caption" data-film-caption>Across 1,419,172 addresses in our index, three out of four are gone within a day.</p>
+    <p class="film__caption" data-film-caption>There is no dispute window afterwards. The moment before the payment is the only moment a payer can act.</p>
+  </div>
+
+  <div class="film__controls" data-film-controls role="group" aria-label="Choose a frame" hidden>
+    <button class="film__dot" type="button" data-film-dot aria-label="Frame 1: an address a business keeps"><span class="film__dot-mark"></span></button>
+    <button class="film__dot" type="button" data-film-dot aria-label="Frame 2: an address paid exactly once"><span class="film__dot-mark"></span></button>
+    <button class="film__dot" type="button" data-film-dot aria-label="Frame 3: the whole population"><span class="film__dot-mark"></span></button>
+    <button class="film__dot" type="button" data-film-dot aria-label="Frame 4: the only moment to act"><span class="film__dot-mark"></span></button>
+  </div>
+</div>
+</div>
+<p>Compare that with any economy you would call healthy. A payment address of a
+real service is long-lived by nature: people write it down, clients cache it,
+money keeps arriving at it. A population where the <em>typical</em> address is
+single-use does not look like a population of merchants. It looks like a
+population of tickets, printed, punched once, thrown away.</p>
+<h2 id="nearly-half-of-new-addresses-arrive-in-batches">Nearly half of new addresses arrive in batches</h2>
+<p>Creating an address costs nothing, and the tooling that automates payments
+automates creation just as well. You can see this directly in the funding
+graph. We track where each address&#39;s <em>first</em> money came from, and when hundreds
+of new addresses share a single first funding source, that is the signature of
+batch creation. An address farm.</p>
+<p>In one week of August 2026 (the <a href="/reports">weekly report</a> series carries the
+running numbers), 14,888 addresses received their first funds. Of those,
+<strong>6,708, or 45%, arrived in groups of ten or more siblings</strong> funded by the same
+source. There were 119 such groups that week. The largest held 1,375
+addresses. Across every address our nightly scoring batch covers, one in four
+carries the shared-batch-funding pattern.</p>
+<div class="figure-block"><figure class="fig">
+  <svg class="fig__stage" viewBox="0 0 350 524" role="img" aria-label="Diagram: one funding source pays the first funds into a row of sibling addresses created in the same week." focusable="false">
+        <g class="tone-chain">
+      <path class="film__edge" d="M175 124L39 300"/>
+      <path class="film__edge" d="M175 124L107 300"/>
+      <path class="film__edge" d="M175 124V300"/>
+      <path class="film__edge" d="M175 124L243 300"/>
+      <path class="film__edge" d="M175 124L311 300"/>
+    </g>
+
+        <g class="tone-chain">
+      <text class="film__label" x="175" y="30">one funding source</text>
+      <rect class="film__box" x="139" y="46" width="72" height="72" rx="16"/>
+      <text class="film__addr" x="175" y="88" data-literal>0x…</text>
+    </g>
+
+    <g class="tone-payer">
+      <rect class="film__box" x="17" y="300" width="44" height="44" rx="10"/>
+      <text class="film__addr" x="39" y="327" data-literal>0x…</text>
+      <rect class="film__box" x="85" y="300" width="44" height="44" rx="10"/>
+      <text class="film__addr" x="107" y="327" data-literal>0x…</text>
+      <rect class="film__box" x="153" y="300" width="44" height="44" rx="10"/>
+      <text class="film__addr" x="175" y="327" data-literal>0x…</text>
+      <rect class="film__box" x="221" y="300" width="44" height="44" rx="10"/>
+      <text class="film__addr" x="243" y="327" data-literal>0x…</text>
+      <rect class="film__box" x="289" y="300" width="44" height="44" rx="10"/>
+      <text class="film__addr" x="311" y="327" data-literal>0x…</text>
+
+      <path class="film__lead" d="M17 358v8h316v-8"/>
+      <text class="film__label" x="175" y="392">1,375 addresses, one week</text>
+    </g>
+
+    <path class="film__lead" d="M20 432H330"/>
+
+        <g class="tone-payer">
+      <text class="film__stat" x="88" y="478">45%</text>
+      <text class="film__stat-note" x="88" y="504">of new addresses</text>
+      <text class="film__stat" x="248" y="478">119</text>
+      <text class="film__stat-note" x="248" y="504">groups in week 33</text>
+    </g>
+  </svg>
+  <figcaption class="fig__caption">Every address in the row received its first funds from the same source, inside the same week.</figcaption>
+</figure>
+</div>
+<p>Here is what we cannot see: intent. A funding edge does not tell us why a
+thousand addresses were created, and we don&#39;t pretend it does. Some batch
+funding is mundane, exchanges sweeping, infrastructure rotating keys. But we
+have yet to find an honest business model that requires a thousand sibling
+<em>payment</em> addresses created inside a week, while every quota-farming,
+airdrop-farming and fake-volume scheme we know of requires exactly that.</p>
+<h2 id="three-quarters-of-scored-addresses-say-avoid-and-that-is-not-the-scary-part">Three quarters of scored addresses say &quot;avoid&quot;, and that is not the scary part</h2>
+<p>Our scorer runs nightly over the active slice of the index, 187,567 addresses
+with enough recent relevance to score. The current verdict distribution:</p>
+<div class="table-scroll"><table class="table">
+<thead>
+<tr>
+<th>Verdict</th>
+<th>Addresses</th>
+<th>Share</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ok</td>
+<td>6,034</td>
+<td>3.2%</td>
+</tr>
+<tr>
+<td>caution</td>
+<td>39,412</td>
+<td>21.0%</td>
+</tr>
+<tr>
+<td>avoid</td>
+<td>142,121</td>
+<td>75.8%</td>
+</tr>
+</tbody></table>
+</div>
+<p>Read that carefully, because the wrong reading is tempting. <strong>This does not
+mean three quarters of x402 recipients are scams.</strong> An <code>avoid</code> verdict means
+strong risk patterns are present, and in this population the dominant patterns
+are exactly the ones above: the address is days old, has almost no history,
+and was funded in a batch. 79% of scored addresses are young, 97% have thin
+history, 25% share batch funding.</p>
+<div class="figure-block"><figure class="fig">
+  <svg class="fig__stage" viewBox="0 0 350 400" role="img" aria-label="Diagram: how the scores fall across 187,567 scored addresses — avoid 75.8%, caution 21.0%, ok 3.2%." focusable="false">
+    <g class="tone-avoid">
+      <rect class="film__bar" x="30" y="40" width="100" height="227" rx="6"/>
+      <path class="film__lead" d="M130 153h16"/>
+      <text class="film__word film__label--aside" x="150" y="148">avoid</text>
+      <text class="film__note" x="150" y="170">75.8% · 142,121</text>
+    </g>
+
+    <g class="tone-caution">
+      <rect class="film__bar" x="30" y="267" width="100" height="63" rx="6"/>
+      <path class="film__lead" d="M130 298h16"/>
+      <text class="film__word film__label--aside" x="150" y="294">caution</text>
+      <text class="film__note" x="150" y="316">21.0% · 39,412</text>
+    </g>
+
+    <g class="tone-ok">
+      <rect class="film__bar" x="30" y="330" width="100" height="10" rx="4"/>
+      <path class="film__lead" d="M130 335h16"/>
+      <text class="film__word film__label--aside" x="150" y="342">ok</text>
+      <text class="film__note" x="150" y="364">3.2% · 6,034</text>
+    </g>
+
+    <text class="film__note" x="30" y="390">187,567 addresses scored nightly</text>
+  </svg>
+  <figcaption class="fig__caption">The verdict is about the evidence, not about guilt: avoid means strong risk patterns are present — most often an address that is days old, has almost no history, and was funded in a batch.</figcaption>
+</figure>
+</div>
+<p>The honest conclusion is structural, not criminal: <strong>the x402 address
+population is dominated by disposable infrastructure.</strong> Whether any given
+disposable address belongs to a fraud scheme, a bot farm, or a perfectly
+innocent script someone ran once, its history cannot vouch for it. In a
+payment protocol with no chargebacks, &quot;cannot vouch&quot; is a risk statement all by
+itself. That is the scary part.</p>
+<h2 id="why-the-ecosystem-is-shaped-like-this">Why the ecosystem is shaped like this</h2>
+<p>Three properties of x402 combine into this picture, and none of them is a flaw
+you can patch:</p>
+<ol>
+<li><strong>Addresses are free.</strong> Burning one after a single use costs nothing, so
+nothing selects for longevity.</li>
+<li><strong>Payments are final.</strong> EIP-3009 transfers have no dispute path, so a
+counterparty&#39;s past behavior is the only leverage a payer has. Disposable
+addresses have no past.</li>
+<li><strong>The payers are agents.</strong> Software doesn&#39;t get suspicious. It will pay a
+five-minute-old address with the same confidence as a five-year-old one,
+thousands of times, unattended.</li>
+</ol>
+<div class="figure-block"><figure class="fig">
+  <svg class="fig__stage" viewBox="0 0 350 430" role="img" aria-label="Diagram: three properties of x402 — free addresses, final payments, software payers — adding up to a population of disposable addresses." focusable="false">
+        <g class="tone-payer">
+      <path class="film__edge" d="M250 62h50M250 146h50M250 230h50M300 62V300H175v18"/>
+      <path class="film__tip" d="M169 310l6 8 6-8"/>
+    </g>
+
+    <g class="tone-payer">
+      <rect class="film__box" x="20" y="30" width="230" height="64" rx="14"/>
+      <text class="film__label" x="135" y="58">addresses are free</text>
+      <text class="film__note film__note--mid" x="135" y="80">nothing selects for age</text>
+
+      <rect class="film__box" x="20" y="114" width="230" height="64" rx="14"/>
+      <text class="film__label" x="135" y="142">payments are final</text>
+      <text class="film__note film__note--mid" x="135" y="164">no dispute path</text>
+
+      <rect class="film__box" x="20" y="198" width="230" height="64" rx="14"/>
+      <text class="film__label" x="135" y="226">the payer is software</text>
+      <text class="film__note film__note--mid" x="135" y="248">it does not hesitate</text>
+    </g>
+
+        <g class="tone-dead">
+      <rect class="film__box film__cell--dead" x="20" y="330" width="310" height="72" rx="16"/>
+      <text class="film__label" x="175" y="362">disposable by default</text>
+      <text class="film__note film__note--mid" x="175" y="384">no past to check</text>
+    </g>
+  </svg>
+  <figcaption class="fig__caption">None of the three is a flaw waiting for a patch — they are properties of the protocol. Together they produce a population where the typical address has no history to vouch for it.</figcaption>
+</figure>
+</div>
+<p>Fraud economics respond to incentives, and the incentive here is plain. In an
+economy where the median payment is around $0.006, nobody disputes a bad
+purchase; nobody even notices one. The only defense that scales is not paying
+the wrong address in the first place.</p>
+<h2 id="what-this-does-not-tell-you">What this does not tell you</h2>
+<p>It does not tell you that a young address is a scam. Every honest service was
+new once, and we score a brand-new address as neutral with low confidence, not
+as guilty. It does not tell you what happens <em>after</em> a payment: we see the
+money move, not whether the API answered. And it says nothing about the payers,
+only about the addresses that get paid. What it does tell you is the base rate,
+and the base rate is that the address your agent is about to pay has, more
+likely than not, no history at all.</p>
+<h2 id="what-to-do-with-this-if-you-run-agents">What to do with this if you run agents</h2>
+<p>Treat an unknown x402 address as untrusted by default; statistically, that is
+simply the base rate. Before the first payment, run the checks we walk through
+in <a href="/articles/check-x402-counterparty-before-paying">how to check an x402 counterparty before paying</a>:
+age, returning counterparties, funding source, graph neighborhood. Or let your
+agent do it in one call: the <a href="/docs">API</a> returns a score, a verdict and the
+reasons for $0.01 over x402 itself, and the <a href="/">free demo</a> answers a few checks
+a day with the same JSON.</p>
+<p><em>All numbers above come from the WalletBureau index of x402 /
+EIP-3009 USDC transfers on Base; the queries were run on 2026-08-20. The
+classification rules, including what counts as an x402 payment, are in the
+<a href="/methodology">methodology</a>. The weekly series in <a href="/reports">reports</a> carries
+these numbers forward.</em></p>
+</div>
+    </article>
+
+    <div class="notice notice--info read-col u-mt-6">
+      <p><strong>Risk signals, not accusations.</strong> A low score means we saw patterns worth checking — not proof of fraud. We explain every flag, and we fix mistakes: if you think a flag is wrong, write to us and a human will review it.</p>
+      <p><a href="/methodology">Read the methodology →</a></p>
+      <p class="u-mt-2"><a class="btn btn--primary" href="/#demo">Check an address</a></p>
+    </div>
+
+    <p class="read-col u-mt-5"><a href="/articles">← All articles</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <p>WalletBureau — risk signals for x402 agent payments</p>
+    <ul class="footer-links">
+      <li><a href="/methodology">Methodology</a></li>
+      <li><a href="/docs">Docs</a></li>
+      <li><a href="/articles">Articles</a></li>
+      <li><a href="/reports">Reports</a></li>
+      <li><a href="/feed.xml">RSS</a></li>
+      <li><a href="https://github.com/walletbureau" rel="noopener">GitHub</a></li>
+      <li><a href="mailto:support@walletbureau.com">Contact</a></li>
+    </ul>
+    <div class="lang"><span>Language:</span><ul><li><a href="https://walletbureau.com/articles/x402-disposable-addresses" aria-current="true">English</a></li></ul></div>
+    <p>Risk signals, not accusations.</p>
+  </footer>
+
+</div>
+<script src="/assets/i18n.en.39078ad4.js"></script>
+<script src="/assets/app.bf5c8d6c.js" defer></script>
+</body>
+</html>

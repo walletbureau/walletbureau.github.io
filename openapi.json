@@ -1,0 +1,20 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "WalletBureau API (paused)",
+    "version": "1.0.0",
+    "description": "The WalletBureau API and MCP server are paused since October 2026: no endpoints are served right now. Methodology and articles stay online at https://walletbureau.com. To get notified when the API is back, write to support@walletbureau.com.",
+    "x-status": "paused",
+    "contact": {
+      "name": "WalletBureau support",
+      "email": "support@walletbureau.com",
+      "url": "https://walletbureau.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://walletbureau.com"
+    }
+  ],
+  "paths": {}
+}

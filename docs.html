@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API reference — WalletBureau</title>
+  <meta name="description" content="One GET, one JSON, a stable schema: endpoints, response fields, error codes, x402 payment flow and prepaid API keys.">
+  <link rel="canonical" href="https://walletbureau.com/docs">
+  <link rel="alternate" hreflang="en" href="https://walletbureau.com/docs">
+  <link rel="alternate" hreflang="x-default" href="https://walletbureau.com/docs">
+  
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WalletBureau">
+  <meta property="og:title" content="API reference — WalletBureau">
+  <meta property="og:description" content="One GET, one JSON, a stable schema: endpoints, response fields, error codes, x402 payment flow and prepaid API keys.">
+  <meta property="og:url" content="https://walletbureau.com/docs">
+  <meta property="og:locale" content="en">
+  <meta property="og:image" content="https://walletbureau.com/assets/og.6d1ebcde.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="WalletBureau — risk signals for x402 agent payments, with the three verdicts: ok, caution, avoid">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.9ba3d42b.png">
+  <link rel="stylesheet" href="/assets/styles.d8f90657.css">
+  
+  
+  
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="bg" aria-hidden="true"></div>
+<div class="wrap">
+  <header class="site-header">
+    <a class="brand" href="/"><img class="brand__mark" src="/assets/logo-mark.a612749c.png" width="82" height="96" alt="" aria-hidden="true"><span class="brand__name">Wallet<span class="brand__name--accent">Bureau</span></span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="/methodology">Methodology</a>
+      <a href="/docs" aria-current="page">Docs</a>
+      <a href="/articles">Articles</a>
+      <a href="/docs#endpoints">API</a>
+    </nav>
+  </header>
+
+  <div class="notice notice--info paused-banner" role="status"><p><strong>The API is paused.</strong> Since October 2026 the scoring API and the MCP server are offline. The methodology and articles stay here. <a href="mailto:support@walletbureau.com">Write to us to hear when it is back.</a></p></div>
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol><li><a href="/">Home</a></li><li>Docs</li></ol>
+  </nav>
+
+  <main id="main" class="doc-layout">
+    <nav class="toc" aria-labelledby="doc-toc-title">
+      <p class="toc__title" id="doc-toc-title">On this page</p>
+      <ul>
+        <li><a href="#quickstart">Quickstart</a></li>
+        <li><a href="#mcp">MCP server</a></li>
+        <li><a href="#endpoints">Endpoints</a></li>
+        <li><a href="#schema">Response schema</a></li>
+        <li><a href="#errors">Error codes</a></li>
+        <li><a href="#x402">Paying with x402</a></li>
+        <li><a href="#keys">API keys</a></li>
+        <li><a href="#limits">Rate limits</a></li>
+      </ul>
+    </nav>
+
+    <div>
+      <div class="page-head u-flush-top">
+        <h1>API reference</h1>
+        <p class="page-meta"><span data-literal>v1</span><span>$0.01 per check · USDC on Base · settlement via x402</span></p>
+      </div>
+
+      <div class="prose u-mt-5">
+        <h2 id="quickstart">Quickstart</h2>
+        <pre class="code"><code><span class="c"># x402: your agent pays $0.01 automatically</span>
+curl https://walletbureau.com/v1/score/0x…
+
+<span class="c"># or with a prepaid key</span>
+curl -H "Authorization: Bearer atk_…" \
+     https://walletbureau.com/v1/score/0x…</code></pre>
+        <p>One GET, one JSON, stable schema. Pay per call with x402 — no account, no invoice, no minimum. Or use a prepaid API key.</p>
+
+        <h2 id="mcp">MCP server</h2>
+        <p>The same check as a tool your agent can call. The package ships ready-to-run JavaScript — no build step, no install scripts, no native modules — and exposes two tools: <code>check_counterparty</code> (one check, $0.01) and <code>get_service_stats</code> (free). The price is read from the live API at startup, so the tool annotation your agent sees is the price it will pay.</p>
+        <pre class="code"><code><span class="c"># Claude Code</span>
+claude mcp add walletbureau -- npx -y @walletbureau/mcp
+
+<span class="c"># Claude Desktop, Cursor and other clients: mcpServers entry</span>
+"walletbureau": { "command": "npx", "args": ["-y", "@walletbureau/mcp"] }</code></pre>
+        <p>How a check is paid for depends on the environment, and nothing has to be switched by hand. If both are set, the prepaid key wins — its balance is already paid for.</p>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th scope="col">Mode</th><th scope="col">Set this</th><th scope="col">What happens</th></tr></thead>
+            <tbody>
+              <tr><td>Free demo</td><td>nothing</td><td>Runs on the demo quota: 3 checks per day per IP.</td></tr>
+              <tr><td>Prepaid key</td><td><code>WALLETBUREAU_API_KEY</code></td><td>Each check is debited from the key&#39;s balance. No crypto involved.</td></tr>
+              <tr><td>Wallet (x402)</td><td><code>X402_PRIVATE_KEY</code></td><td>The server signs an x402 payment of $0.01 in USDC on Base per check.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="optional-line">
+          <a href="https://www.npmjs.com/package/@walletbureau/mcp" rel="noopener">Package on npm →</a>
+          <a href="https://github.com/walletbureau/mcp" rel="noopener">Source on GitHub →</a>
+        </p>
+
+        <h2 id="endpoints">Endpoints</h2>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th scope="col">Method</th><th scope="col">Path</th><th scope="col">Auth</th><th scope="col">Returns</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td><code>/v1/score/{address}</code></td><td><code>x402</code> or <code>Bearer atk_…</code></td><td>Score response</td></tr>
+              <tr><td><code>GET</code></td><td><code>/v1/demo/score/{address}</code></td><td>none · 3 checks/day</td><td>Score response</td></tr>
+              <tr><td><code>GET</code></td><td><code>/v1/stats</code></td><td>none</td><td>Index counters</td></tr>
+              <tr><td><code>GET</code></td><td><code>/v1/health</code></td><td>none</td><td>Service status and indexer lag</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="schema">Response schema</h2>
+        <p>Generated from the published JSON Schema. The demo and the paid endpoint return the same shape; fields are only ever added, never renamed or removed.</p>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th scope="col">Field</th><th scope="col">Type</th><th scope="col">Req.</th><th scope="col">Constraints</th></tr></thead>
+            <tbody>
+              <tr><td><code>address</code></td><td><code>string</code></td><td class="req">yes</td><td><code>^0x[0-9a-f]{40}$</code></td></tr>
+              <tr><td><code>score</code></td><td><code>integer</code></td><td class="req">yes</td><td><code>0–100</code></td></tr>
+              <tr><td><code>verdict</code></td><td><code>string</code></td><td class="req">yes</td><td><code>ok · caution · avoid</code></td></tr>
+              <tr><td><code>flags[]</code></td><td><code>array</code></td><td class="req">yes</td><td></td></tr>
+              <tr><td><code>flags[].code</code></td><td><code>string</code></td><td class="req">yes</td><td><code>new_address · thin_history · concentration · oneoff_pattern · linked_to_flagged · sybil_suspect · activity_spike · labeled · unknown_address</code></td></tr>
+              <tr><td><code>flags[].severity</code></td><td><code>string</code></td><td class="req">yes</td><td><code>low · med · high</code></td></tr>
+              <tr><td><code>flags[].reason</code></td><td><code>string</code></td><td class="req">yes</td><td><code>minLength 1</code></td></tr>
+              <tr><td><code>stats.first_seen</code></td><td><code>string | null</code></td><td class="req">yes</td><td><code>date-time</code></td></tr>
+              <tr><td><code>stats.tx_in</code></td><td><code>integer</code></td><td class="req">yes</td><td><code>≥ 0</code></td></tr>
+              <tr><td><code>stats.tx_out</code></td><td><code>integer</code></td><td class="req">yes</td><td><code>≥ 0</code></td></tr>
+              <tr><td><code>stats.volume_in_usd</code></td><td><code>string</code></td><td class="req">yes</td><td><code>^-?\d+(\.\d+)?$</code></td></tr>
+              <tr><td><code>stats.volume_out_usd</code></td><td><code>string</code></td><td class="req">yes</td><td><code>^-?\d+(\.\d+)?$</code></td></tr>
+              <tr><td><code>stats.distinct_payers</code></td><td><code>integer</code></td><td class="req">yes</td><td><code>≥ 0</code></td></tr>
+              <tr><td><code>stats.confidence_basis</code></td><td><code>string</code></td><td class="req">yes</td><td><code>minLength 1</code></td></tr>
+              <tr><td><code>meta.computed_at</code></td><td><code>string</code></td><td class="req">yes</td><td><code>date-time</code></td></tr>
+              <tr><td><code>meta.cache_age_seconds</code></td><td><code>integer</code></td><td class="req">yes</td><td><code>≥ 0</code></td></tr>
+              <tr><td><code>meta.api_version</code></td><td><code>string</code></td><td class="req">yes</td><td><code>= v1</code></td></tr>
+              <tr><td><code>meta.disclaimer</code></td><td><code>string</code></td><td class="req">yes</td><td><code>minLength 1</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <pre class="code"><code>{
+  "address": "0x8f3a1c2b9d4e5f60718293a4b5c6d7e8f9a0b1c2",
+  "score": 34,
+  "verdict": "avoid",
+  "flags": [
+    { "code": "new_address", "severity": "high",
+      "reason": "First seen in x402/EIP-3009 data 4 days ago (younger than 7 days)" }
+  ],
+  "stats": {
+    "first_seen": "2026-08-06T09:12:44.000Z",
+    "tx_in": 128, "tx_out": 3,
+    "volume_in_usd": "604.31", "volume_out_usd": "12.05",
+    "distinct_payers": 128,
+    "confidence_basis": "confirmed+probable"
+  },
+  "meta": {
+    "computed_at": "2026-08-10T18:00:02.000Z",
+    "cache_age_seconds": 312,
+    "api_version": "v1",
+    "disclaimer": "Risk signals, not accusations. Methodology: https://walletbureau.com/methodology"
+  }
+}</code></pre>
+
+        <h2 id="errors">Error codes</h2>
+        <p>Every error returns JSON with a stable machine-readable &lt;code&gt;error&lt;/code&gt; field and a human-readable &lt;code&gt;message&lt;/code&gt;. Match on &lt;code&gt;error&lt;/code&gt;, not on the message text.</p>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th scope="col">HTTP</th><th scope="col"><code>error</code></th><th scope="col">Meaning</th></tr></thead>
+            <tbody>
+              <tr><td class="num">400</td><td><code>invalid_address</code></td><td>Not 0x + 40 hex characters</td></tr>
+              <tr><td class="num">401</td><td><code>invalid_api_key</code></td><td>Unknown or disabled API key</td></tr>
+              <tr><td class="num">402</td><td><code>payment_required</code></td><td>No payment yet — the x402 requirements are in the PAYMENT-REQUIRED header</td></tr>
+              <tr><td class="num">402</td><td><code>insufficient_balance</code></td><td>Prepaid key has less than the price of one call</td></tr>
+              <tr><td class="num">429</td><td><code>demo_limit_reached</code></td><td>Today&#39;s free demo checks are used up</td></tr>
+              <tr><td class="num">429</td><td><code>rate_limited</code></td><td>Too many requests per second from one IP</td></tr>
+              <tr><td class="num">503</td><td><code>score_unavailable</code></td><td>Scoring is temporarily unavailable — you are not charged</td></tr>
+              <tr><td class="num">503</td><td><code>db_unavailable</code></td><td>The index is temporarily unavailable</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="x402">Paying with x402</h2>
+        <p>Call the endpoint without credentials, receive 402 Payment Required, settle $0.01 in USDC on Base through the x402 flow, and repeat the request. No account, no invoice, no minimum.</p>
+        <pre class="code"><code>curl -i https://walletbureau.com/v1/score/0x…
+HTTP/1.1 402 Payment Required</code></pre>
+
+        <h2 id="keys">API keys</h2>
+        <p>A prepaid key skips the payment round-trip. Send it as a bearer token. Keys are issued by hand for now — write to us.</p>
+        <pre class="code"><code>curl -H "Authorization: Bearer atk_…" \
+     https://walletbureau.com/v1/score/0x…</code></pre>
+
+        <h2 id="limits">Rate limits</h2>
+        <div class="table-scroll">
+          <table class="table">
+            <thead><tr><th scope="col">Caller</th><th scope="col">Limit</th><th scope="col">On exceed</th></tr></thead>
+            <tbody>
+              <tr><td>Demo (no auth)</td><td class="num">3 / day per IP</td><td><code>429 demo_limit_reached</code></td></tr>
+              <tr><td>Any caller</td><td class="num">10 / second per IP</td><td><code>429 rate_limited</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="notice notice--info u-mt-6">
+          <p><strong>Risk signals, not accusations.</strong> A low score means we saw patterns worth checking — not proof of fraud. We explain every flag, and we fix mistakes: if you think a flag is wrong, write to us and a human will review it.</p>
+          <p><a href="/methodology">Read the methodology →</a></p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>WalletBureau — risk signals for x402 agent payments</p>
+    <ul class="footer-links">
+      <li><a href="/methodology">Methodology</a></li>
+      <li><a href="/docs">Docs</a></li>
+      <li><a href="/articles">Articles</a></li>
+      <li><a href="/reports">Reports</a></li>
+      <li><a href="/feed.xml">RSS</a></li>
+      <li><a href="https://github.com/walletbureau" rel="noopener">GitHub</a></li>
+      <li><a href="mailto:support@walletbureau.com">Contact</a></li>
+    </ul>
+    <div class="lang"><span>Language:</span><ul><li><a href="https://walletbureau.com/docs" aria-current="true">English</a></li></ul></div>
+    <p>Risk signals, not accusations.</p>
+  </footer>
+
+</div>
+<script src="/assets/i18n.en.39078ad4.js"></script>
+<script src="/assets/app.bf5c8d6c.js" defer></script>
+</body>
+</html>

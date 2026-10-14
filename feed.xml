@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>WalletBureau</title>
+    <link>https://walletbureau.com/</link>
+    <description>Risk signals for x402 agent payments on Base — articles and weekly reports from our own index.</description>
+    <language>en</language>
+    <atom:link href="https://walletbureau.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>How to check an x402 counterparty before paying</title>
+      <link>https://walletbureau.com/articles/check-x402-counterparty-before-paying</link>
+      <guid isPermaLink="true">https://walletbureau.com/articles/check-x402-counterparty-before-paying</guid>
+      <pubDate>Thu, 20 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Five checks to run on a Base address before your agent pays it. One takes a minute in a block explorer; four need the transfer graph. What each one tells you.</description>
+    </item>
+    <item>
+      <title>The x402 economy runs on disposable addresses</title>
+      <link>https://walletbureau.com/articles/x402-disposable-addresses</link>
+      <guid isPermaLink="true">https://walletbureau.com/articles/x402-disposable-addresses</guid>
+      <pubDate>Thu, 20 Aug 2026 00:00:00 GMT</pubDate>
+      <description>We indexed 1.4 million addresses paid through x402 on Base. The one in the middle lived for a single transaction. What that means when an agent pays strangers.</description>
+    </item>
+    <item>
+      <title>x402 payments on Base — week 33, 2026</title>
+      <link>https://walletbureau.com/reports/2026-33</link>
+      <guid isPermaLink="true">https://walletbureau.com/reports/2026-33</guid>
+      <pubDate>Wed, 19 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Weekly numbers from the WalletBureau index: 14,888 new addresses (up 75%), $7.2M in x402 USDC transfers on Base, and 45% of new addresses funded in batches.</description>
+    </item>
+  </channel>
+</rss>
